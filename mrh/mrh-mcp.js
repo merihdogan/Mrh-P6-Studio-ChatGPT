@@ -5,7 +5,7 @@
  * Primavera P6 Professional SQLite veritabanlarini yapay zeka asistanlarina acar.
  * Bagimliliksiz. Tasima: stdio (varsayilan) ya da Streamable HTTP (--http).
  *
- *   node mrh-mcp.js                      stdio (Claude, Gemini CLI, Codex CLI)
+ *   node mrh-mcp.js                      stdio (masaustu ve komut satiri MCP istemcileri)
  *   node mrh-mcp.js --http --port 4791   HTTP  (ChatGPT; bir HTTPS tuneli ile)
  *
  * Ortam degiskenleri:

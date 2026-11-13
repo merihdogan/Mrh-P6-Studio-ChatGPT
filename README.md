@@ -7,7 +7,7 @@ MRH P6 is an open-source MCP server for the P6 SQLite database on your computer.
 
 ## Option A — Codex CLI (local, simplest)
 
-Codex runs local MCP servers directly. Clone this repo, then add to `~/.codex/config.toml`:
+Codex runs local MCP servers directly. Download this repo (Code → Download ZIP, or git), then add to `~/.codex/config.toml`:
 
 ```toml
 [mcp_servers.mrh-p6]
