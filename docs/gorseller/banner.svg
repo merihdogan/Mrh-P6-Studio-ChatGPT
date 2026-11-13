@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="440" viewBox="0 0 1280 440" role="img" aria-label="MRH P6 Studio for ChatGPT &amp; Codex">
+  
+  <defs>
+    <linearGradient id="zemin" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0b1020"/><stop offset="1" stop-color="#121a2c"/></linearGradient>
+    <linearGradient id="altin" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#f3d9a4"/><stop offset="1" stop-color="#c9973f"/></linearGradient>
+    <linearGradient id="vurgu" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#3ddc97"/><stop offset="1" stop-color="#5eead4"/></linearGradient>
+    <radialGradient id="parlama" cx="0.85" cy="0.1" r="0.7"><stop offset="0" stop-color="#3ddc97" stop-opacity=".28"/><stop offset="1" stop-color="#3ddc97" stop-opacity="0"/></radialGradient>
+    <radialGradient id="parlama2" cx="0.05" cy="1" r="0.6"><stop offset="0" stop-color="#d9b26f" stop-opacity=".18"/><stop offset="1" stop-color="#d9b26f" stop-opacity="0"/></radialGradient>
+    <filter id="golge" x="-20%" y="-20%" width="140%" height="160%"><feDropShadow dx="0" dy="14" stdDeviation="16" flood-color="#000" flood-opacity=".45"/></filter>
+    <pattern id="izgara" width="32" height="32" patternUnits="userSpaceOnUse"><path d="M32 0H0V32" fill="none" stroke="#ffffff" stroke-opacity=".035"/></pattern>
+  </defs><rect width="1280" height="440" rx="22" fill="url(#zemin)"/><rect width="1280" height="440" rx="22" fill="url(#izgara)"/>
+  <rect width="1280" height="440" rx="22" fill="url(#parlama)"/><rect width="1280" height="440" rx="22" fill="url(#parlama2)"/>
+  <rect x=".5" y=".5" width="1279" height="439" rx="21.5" fill="none" stroke="#ffffff" stroke-opacity=".08"/>
+  <g transform="translate(72 58) scale(1.05)">
+  <rect x="2" y="2" width="60" height="60" rx="15" fill="#151d30" stroke="url(#altin)" stroke-width="2"/>
+  <rect x="13" y="17" width="22" height="6" rx="3" fill="url(#altin)"/><rect x="23" y="29" width="26" height="6" rx="3" fill="#5eead4"/>
+  <rect x="31" y="41" width="20" height="6" rx="3" fill="url(#altin)" opacity=".85"/>
+  <path d="M35 20h4a3 3 0 0 1 3 3v3M46 35v3a3 3 0 0 1-3 3h-1" fill="none" stroke="#8c97ad" stroke-width="1.6" stroke-linecap="round"/></g>
+  <text x="152" y="88" font-family="'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="15" font-weight="700" letter-spacing="4" fill="url(#altin)">MRH P6 STUDIO</text>
+  <text x="152" y="114" font-family="'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="15" fill="#93a0b8">open-source MCP plugin</text>
+  <text x="72" y="190" font-family="'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="50" font-weight="700" fill="#eef2fa">Talk to your</text>
+  <text x="72" y="246" font-family="'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="50" font-weight="700" fill="url(#altin)">Primavera P6 schedules</text>
+  <g transform="translate(72 268)"><rect width="229.79999999999998" height="38" rx="19" fill="url(#vurgu)"/>
+    <text x="18" y="25" font-family="'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="17" font-weight="700" fill="#0b1020">for ChatGPT &amp; Codex</text></g>
+  <g transform="translate(72 330)"><rect width="186" height="32" rx="16" fill="#ffffff" fill-opacity=".05" stroke="#ffffff" stroke-opacity=".12"/>
+    <circle cx="16" cy="16" r="4" fill="#d9b26f"/><text x="27" y="21" font-family="'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13.5" fill="#cfd6e4">Read-only by default</text></g><g transform="translate(268 330)"><rect width="170.79999999999998" height="32" rx="16" fill="#ffffff" fill-opacity=".05" stroke="#ffffff" stroke-opacity=".12"/>
+    <circle cx="16" cy="16" r="4" fill="#3ddc97"/><text x="27" y="21" font-family="'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13.5" fill="#cfd6e4">Auto backup + undo</text></g><g transform="translate(448.79999999999995 330)"><rect width="193.6" height="32" rx="16" fill="#ffffff" fill-opacity=".05" stroke="#ffffff" stroke-opacity=".12"/>
+    <circle cx="16" cy="16" r="4" fill="#d9b26f"/><text x="27" y="21" font-family="'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13.5" fill="#cfd6e4">15-check health score</text></g><g transform="translate(72 374)"><rect width="239.2" height="32" rx="16" fill="#ffffff" fill-opacity=".05" stroke="#ffffff" stroke-opacity=".12"/>
+    <circle cx="16" cy="16" r="4" fill="#3ddc97"/><text x="27" y="21" font-family="'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13.5" fill="#cfd6e4">Baseline slips &amp; look-ahead</text></g><g transform="translate(321.2 374)"><rect width="110" height="32" rx="16" fill="#ffffff" fill-opacity=".05" stroke="#ffffff" stroke-opacity=".12"/>
+    <circle cx="16" cy="16" r="4" fill="#d9b26f"/><text x="27" y="21" font-family="'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13.5" fill="#cfd6e4">XER export</text></g>
+
+  <g filter="url(#golge)"><rect x="760" y="64" width="456" height="312" rx="18" fill="#141c2e" stroke="#ffffff" stroke-opacity=".10"/></g>
+  <circle cx="782" cy="86" r="5" fill="#ff7a85"/><circle cx="798" cy="86" r="5" fill="#f5c451"/><circle cx="814" cy="86" r="5" fill="#5bd68f"/>
+  <text x="834" y="91" font-family="'Cascadia Code', Consolas, 'SFMono-Regular', Menlo, monospace" font-size="12.5" fill="#93a0b8">PROJECT · Gantt + baseline</text>
+  <line x1="760" y1="108" x2="1216" y2="108" stroke="#ffffff" stroke-opacity=".08"/>
+  <rect x="784" y="133" width="70" height="8" rx="4" fill="#ffffff" fill-opacity=".10"/>
+      <rect x="880" y="130" width="90" height="13" rx="5" fill="#4f6b8f"/>
+      <rect x="880" y="147" width="90" height="3" rx="1.5" fill="#d9b26f" opacity=".85"/><rect x="784" y="163" width="70" height="8" rx="4" fill="#ffffff" fill-opacity=".10"/>
+      <rect x="920" y="160" width="120" height="13" rx="5" fill="#4f6b8f"/>
+      <rect x="920" y="177" width="120" height="3" rx="1.5" fill="#d9b26f" opacity=".85"/><rect x="784" y="193" width="70" height="8" rx="4" fill="#ffffff" fill-opacity=".10"/>
+      <rect x="970" y="190" width="150" height="13" rx="5" fill="#4c8dff"/>
+      <rect x="970" y="207" width="150" height="3" rx="1.5" fill="#d9b26f" opacity=".85"/><rect x="784" y="223" width="70" height="8" rx="4" fill="#ffffff" fill-opacity=".10"/>
+      <rect x="1030" y="220" width="110" height="13" rx="5" fill="#ff7a85"/>
+      <rect x="1012" y="237" width="110" height="3" rx="1.5" fill="#d9b26f" opacity=".85"/><rect x="784" y="253" width="70" height="8" rx="4" fill="#ffffff" fill-opacity=".10"/>
+      <rect x="1010" y="250" width="170" height="13" rx="5" fill="#4c8dff"/>
+      <rect x="992" y="267" width="170" height="3" rx="1.5" fill="#d9b26f" opacity=".85"/><rect x="784" y="283" width="70" height="8" rx="4" fill="#ffffff" fill-opacity=".10"/>
+      <rect x="1110" y="280" width="120" height="13" rx="5" fill="#ff7a85"/>
+      <rect x="1092" y="297" width="120" height="3" rx="1.5" fill="#d9b26f" opacity=".85"/><rect x="784" y="313" width="70" height="8" rx="4" fill="#ffffff" fill-opacity=".10"/>
+      <rect x="1180" y="310" width="90" height="13" rx="5" fill="#4c8dff"/>
+      <rect x="1162" y="327" width="90" height="3" rx="1.5" fill="#d9b26f" opacity=".85"/>
+  <line x1="1116" y1="120" x2="1116" y2="360" stroke="#d9b26f" stroke-width="1.6" stroke-dasharray="5 4"/>
+  <path d="M1110 116h12l-6 7z" fill="#d9b26f"/>
+
+  <g filter="url(#golge)">
+    <rect x="690" y="260" width="300" height="56" rx="16" fill="#1d2740" stroke="#ffffff" stroke-opacity=".12"/>
+    <text x="708" y="294" font-family="'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="15.5" fill="#e7ecf6">“Which activities slipped most?”</text>
+    <rect x="910" y="326" width="330" height="62" rx="16" fill="url(#vurgu)"/>
+    <text x="928" y="352" font-family="'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="700" fill="#0b1020">A3030  Kompresör paketi  -84 d</text>
+    <text x="928" y="373" font-family="'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13" fill="#0b1020" fill-opacity=".8">biggest slip · project finish -21 d</text>
+  </g>
+</svg>

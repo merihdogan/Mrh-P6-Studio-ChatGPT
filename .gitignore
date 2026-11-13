@@ -1,7 +1,6 @@
 node_modules/
 ornek/
 mrh_yedekler/
-dagitim/
 *.db
 *.db-journal
-*.mcpb
+dagitim/

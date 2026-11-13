@@ -1,5 +1,5 @@
-# Add to ~/.codex/config.toml (Windows: %USERPROFILE%\.codex\config.toml)
+# Add to ~/.codex/config.toml  (Windows: %USERPROFILE%\.codex\config.toml)
 [mcp_servers.mrh-p6]
 command = "node"
-args = ["C:/path/mrh-p6-chatgpt/mrh/mrh-mcp.js"]
-env = { MRH_EDIT = "0" }
+args = ["C:/path/to/Mrh-P6-Studio-ChatGPT/mrh/mrh-mcp.js"]
+env = { MRH_EDIT = "0" }   # "1" to allow editing

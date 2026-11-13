@@ -1,22 +1,28 @@
 {
-  "name": "mrh-p6-chatgpt",
+  "name": "mrh-p6-studio-chatgpt",
   "version": "1.0.0",
-  "description": "MRH P6 for ChatGPT and Codex: read and edit Primavera P6 Professional SQLite schedules over MCP.",
+  "description": "MRH P6 Studio for ChatGPT & Codex - talk to your Primavera P6 Professional schedules (open-source MCP server).",
   "author": "Merih Doğan",
   "license": "MIT",
+  "homepage": "https://github.com/merihdogan/Mrh-P6-Studio-ChatGPT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/merihdogan/mrh-p6-chatgpt.git"
+    "url": "https://github.com/merihdogan/Mrh-P6-Studio-ChatGPT.git"
+  },
+  "bugs": {
+    "url": "https://github.com/merihdogan/Mrh-P6-Studio-ChatGPT/issues"
   },
   "keywords": [
     "primavera",
     "p6",
     "mcp",
+    "model-context-protocol",
     "scheduling",
     "construction",
     "xer",
     "sqlite",
-    "planning"
+    "planning",
+    "project-controls"
   ],
   "engines": {
     "node": ">=22.13"

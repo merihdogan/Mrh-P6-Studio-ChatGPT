@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="420" viewBox="0 0 1280 420" role="img" aria-label="Schedule health check">
+  
+  <defs>
+    <linearGradient id="zemin" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0b1020"/><stop offset="1" stop-color="#121a2c"/></linearGradient>
+    <linearGradient id="altin" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#f3d9a4"/><stop offset="1" stop-color="#c9973f"/></linearGradient>
+    <linearGradient id="vurgu" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#3ddc97"/><stop offset="1" stop-color="#5eead4"/></linearGradient>
+    <radialGradient id="parlama" cx="0.85" cy="0.1" r="0.7"><stop offset="0" stop-color="#3ddc97" stop-opacity=".28"/><stop offset="1" stop-color="#3ddc97" stop-opacity="0"/></radialGradient>
+    <radialGradient id="parlama2" cx="0.05" cy="1" r="0.6"><stop offset="0" stop-color="#d9b26f" stop-opacity=".18"/><stop offset="1" stop-color="#d9b26f" stop-opacity="0"/></radialGradient>
+    <filter id="golge" x="-20%" y="-20%" width="140%" height="160%"><feDropShadow dx="0" dy="14" stdDeviation="16" flood-color="#000" flood-opacity=".45"/></filter>
+    <pattern id="izgara" width="32" height="32" patternUnits="userSpaceOnUse"><path d="M32 0H0V32" fill="none" stroke="#ffffff" stroke-opacity=".035"/></pattern>
+  </defs><rect width="1280" height="420" rx="22" fill="url(#zemin)"/><rect width="1280" height="420" rx="22" fill="url(#izgara)"/>
+  <rect width="1280" height="420" rx="22" fill="url(#parlama)"/><rect width="1280" height="420" rx="22" fill="url(#parlama2)"/>
+  <rect x=".5" y=".5" width="1279" height="419" rx="21.5" fill="none" stroke="#ffffff" stroke-opacity=".08"/>
+  <text x="48" y="54" font-family="'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="22" font-weight="700" fill="#eef2fa">mrh_health_check — 15 schedule quality checks</text>
+  <g transform="translate(60 100)">
+    <circle cx="90" cy="90" r="78" fill="none" stroke="#ffffff" stroke-opacity=".08" stroke-width="16"/>
+    <circle cx="90" cy="90" r="78" fill="none" stroke="#f5c451" stroke-width="16" stroke-linecap="round" stroke-dasharray="303.8548414552048 490.0884539600077" transform="rotate(-90 90 90)"/>
+    <text x="90" y="102" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="52" font-weight="700" fill="#eef2fa">62</text>
+    <text x="90" y="128" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" fill="#93a0b8">/ 100</text>
+    <text x="90" y="220" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="15" fill="#dfe5f1">8 of 13 checks passed</text>
+  </g>
+  <g transform="translate(360 96)"><rect width="420" height="46" rx="12" fill="#151d30" stroke="#ff7a85" stroke-opacity=".35"/>
+      <circle cx="22" cy="23" r="9" fill="#ff7a85" fill-opacity=".18"/>
+      <path d="M18 18l8 10M26 18l-8 10" fill="none" stroke="#ff7a85" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="42" y="29" font-family="'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14.5" fill="#dfe5f1">Missing logic</text>
+      <text x="404" y="29" text-anchor="end" font-family="'Cascadia Code', Consolas, 'SFMono-Regular', Menlo, monospace" font-size="14" font-weight="700" fill="#ff7a85">3</text></g><g transform="translate(800 96)"><rect width="420" height="46" rx="12" fill="#151d30" stroke="#ff7a85" stroke-opacity=".35"/>
+      <circle cx="22" cy="23" r="9" fill="#ff7a85" fill-opacity=".18"/>
+      <path d="M18 18l8 10M26 18l-8 10" fill="none" stroke="#ff7a85" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="42" y="29" font-family="'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14.5" fill="#dfe5f1">Negative lags (leads)</text>
+      <text x="404" y="29" text-anchor="end" font-family="'Cascadia Code', Consolas, 'SFMono-Regular', Menlo, monospace" font-size="14" font-weight="700" fill="#ff7a85">1</text></g><g transform="translate(360 154)"><rect width="420" height="46" rx="12" fill="#151d30" stroke="#ff7a85" stroke-opacity=".35"/>
+      <circle cx="22" cy="23" r="9" fill="#ff7a85" fill-opacity=".18"/>
+      <path d="M18 18l8 10M26 18l-8 10" fill="none" stroke="#ff7a85" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="42" y="29" font-family="'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14.5" fill="#dfe5f1">Positive lags</text>
+      <text x="404" y="29" text-anchor="end" font-family="'Cascadia Code', Consolas, 'SFMono-Regular', Menlo, monospace" font-size="14" font-weight="700" fill="#ff7a85">9</text></g><g transform="translate(800 154)"><rect width="420" height="46" rx="12" fill="#151d30" stroke="#ff7a85" stroke-opacity=".35"/>
+      <circle cx="22" cy="23" r="9" fill="#ff7a85" fill-opacity=".18"/>
+      <path d="M18 18l8 10M26 18l-8 10" fill="none" stroke="#ff7a85" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="42" y="29" font-family="'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14.5" fill="#dfe5f1">Non-FS relationships</text>
+      <text x="404" y="29" text-anchor="end" font-family="'Cascadia Code', Consolas, 'SFMono-Regular', Menlo, monospace" font-size="14" font-weight="700" fill="#ff7a85">10</text></g><g transform="translate(360 212)"><rect width="420" height="46" rx="12" fill="#151d30" stroke="#5bd68f" stroke-opacity=".35"/>
+      <circle cx="22" cy="23" r="9" fill="#5bd68f" fill-opacity=".18"/>
+      <path d="M17 23l4 4 7-8" fill="none" stroke="#5bd68f" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="42" y="29" font-family="'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14.5" fill="#dfe5f1">Start-to-finish links</text>
+      <text x="404" y="29" text-anchor="end" font-family="'Cascadia Code', Consolas, 'SFMono-Regular', Menlo, monospace" font-size="14" font-weight="700" fill="#5bd68f">0</text></g><g transform="translate(800 212)"><rect width="420" height="46" rx="12" fill="#151d30" stroke="#5bd68f" stroke-opacity=".35"/>
+      <circle cx="22" cy="23" r="9" fill="#5bd68f" fill-opacity=".18"/>
+      <path d="M17 23l4 4 7-8" fill="none" stroke="#5bd68f" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="42" y="29" font-family="'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14.5" fill="#dfe5f1">Hard constraints</text>
+      <text x="404" y="29" text-anchor="end" font-family="'Cascadia Code', Consolas, 'SFMono-Regular', Menlo, monospace" font-size="14" font-weight="700" fill="#5bd68f">1</text></g><g transform="translate(360 270)"><rect width="420" height="46" rx="12" fill="#151d30" stroke="#ff7a85" stroke-opacity=".35"/>
+      <circle cx="22" cy="23" r="9" fill="#ff7a85" fill-opacity=".18"/>
+      <path d="M18 18l8 10M26 18l-8 10" fill="none" stroke="#ff7a85" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="42" y="29" font-family="'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14.5" fill="#dfe5f1">High total float (&gt;44 d)</text>
+      <text x="404" y="29" text-anchor="end" font-family="'Cascadia Code', Consolas, 'SFMono-Regular', Menlo, monospace" font-size="14" font-weight="700" fill="#ff7a85">3</text></g><g transform="translate(800 270)"><rect width="420" height="46" rx="12" fill="#151d30" stroke="#5bd68f" stroke-opacity=".35"/>
+      <circle cx="22" cy="23" r="9" fill="#5bd68f" fill-opacity=".18"/>
+      <path d="M17 23l4 4 7-8" fill="none" stroke="#5bd68f" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="42" y="29" font-family="'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14.5" fill="#dfe5f1">Negative float</text>
+      <text x="404" y="29" text-anchor="end" font-family="'Cascadia Code', Consolas, 'SFMono-Regular', Menlo, monospace" font-size="14" font-weight="700" fill="#5bd68f">0</text></g><g transform="translate(360 328)"><rect width="420" height="46" rx="12" fill="#151d30" stroke="#5bd68f" stroke-opacity=".35"/>
+      <circle cx="22" cy="23" r="9" fill="#5bd68f" fill-opacity=".18"/>
+      <path d="M17 23l4 4 7-8" fill="none" stroke="#5bd68f" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="42" y="29" font-family="'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14.5" fill="#dfe5f1">Long durations (&gt;44 d)</text>
+      <text x="404" y="29" text-anchor="end" font-family="'Cascadia Code', Consolas, 'SFMono-Regular', Menlo, monospace" font-size="14" font-weight="700" fill="#5bd68f">1</text></g><g transform="translate(800 328)"><rect width="420" height="46" rx="12" fill="#151d30" stroke="#5bd68f" stroke-opacity=".35"/>
+      <circle cx="22" cy="23" r="9" fill="#5bd68f" fill-opacity=".18"/>
+      <path d="M17 23l4 4 7-8" fill="none" stroke="#5bd68f" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="42" y="29" font-family="'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14.5" fill="#dfe5f1">Invalid dates</text>
+      <text x="404" y="29" text-anchor="end" font-family="'Cascadia Code', Consolas, 'SFMono-Regular', Menlo, monospace" font-size="14" font-weight="700" fill="#5bd68f">0</text></g>
+</svg>

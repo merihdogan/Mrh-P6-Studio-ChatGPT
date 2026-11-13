@@ -57,7 +57,7 @@ function projeOzeti(yuk) {
 }
 
 function kayanlar(yuk, limit = 25) {
-  return yuk.aktiviteler.filter(a => a.bf && a.bit)
+  return yuk.aktiviteler.filter(a => a.bf && a.bit && a.tur !== 'TT_LOE')
     .map(a => ({ kod: a.kod, ad: a.ad, durum: a.st, tabanBitis: a.bf, guncelBitis: a.bit, sapmaGun: Math.round(gun(a.bf) - gun(a.bit)), kritik: a.kr }))
     .filter(x => x.sapmaGun < 0).sort((x, y) => x.sapmaGun - y.sapmaGun).slice(0, limit);
 }

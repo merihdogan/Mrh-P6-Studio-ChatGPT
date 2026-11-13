@@ -594,4 +594,4 @@ if (require.main === module) {
   if (process.argv.includes('--http')) httpBaslat(port); else stdioBaslat();
 }
 
-module.exports = { isle, ARACLAR };
+module.exports = { isle, ARACLAR, kapat: () => { if (D.p6) D.p6.kapat(); D.p6 = null; } };
