@@ -33,7 +33,48 @@ const { DgnP6, MrhHata } = require('./dgn-p6');
 const yaz = require('./dgn-yazim');
 const { planSagligi } = require('./dgn-kontrol');
 const { xerOlustur } = require('./dgn-xer');
-const { projeOzeti, kayanlar, onumuzdeki } = require('./dgn-ozet');
+const { projeOzeti, kayanlar, onumuzdeki, ilerlemeEgrisi, kritikler } = require('./dgn-ozet');
+
+// Sohbet ici pano (MCP Apps, SEP-1865): ui:// kaynagi + araca baglanti
+const PANO_URI = 'ui://mrh-p6/pano';
+const PANO_MIME = 'text/html;profile=mcp-app';
+const panoHtml = () => fs.readFileSync(path.join(__dirname, 'mrh-pano.html'), 'utf8');
+
+function panoVerisi(p6, pr, taban) {
+  const yuk = p6.projeYukle(pr.id, { tabanId: taban });
+  const o = projeOzeti(yuk);
+  const W = new Map(yuk.wbs.map(w => [w.id, w]));
+  const yolBellek = new Map();
+  const yol = id => {
+    if (yolBellek.has(id)) return yolBellek.get(id);
+    const p = []; let w = W.get(id), g = 0;
+    while (w && !w.kok && g++ < 50) { p.unshift(w.kod); w = W.get(w.ust); }
+    const s = p.join('.'); yolBellek.set(id, s); return s;
+  };
+  // WBS agac sirasi (P6 seq_num sirasiyla, derinlik oncelikli)
+  const cocuk = new Map();
+  for (const w of yuk.wbs) { if (!cocuk.has(w.ust)) cocuk.set(w.ust, []); cocuk.get(w.ust).push(w); }
+  const sira = new Map(); const wbsListe = [];
+  const gez = (w, d) => { sira.set(w.id, sira.size); if (!w.kok) wbsListe.push({ yol: yol(w.id), ad: w.ad, derinlik: d }); for (const c of cocuk.get(w.id) || []) gez(c, w.kok ? 0 : d + 1); };
+  for (const k of yuk.wbs.filter(w => !W.has(w.ust))) gez(k, 0);
+  const TUR = { TT_Mile: 1, TT_FinMile: 2, TT_LOE: 3, TT_WBS: 3 };
+  const ST = { TK_NotStart: 0, TK_Active: 1, TK_Complete: 2 };
+  const SINIR = 1500;
+  const A = [...yuk.aktiviteler].sort((x, y) => (sira.get(x.w) ?? 1e9) - (sira.get(y.w) ?? 1e9) || (x.bas || '').localeCompare(y.bas || '') || x.kod.localeCompare(y.kod));
+  const s = planSagligi(yuk);
+  const kod = new Map(yuk.aktiviteler.map(a => [a.id, a.kod]));
+  return {
+    surum: SURUM, duzenleme: DUZENLEME, veritabani: path.basename(p6.dosya),
+    projeler: p6.projeler().map(p => ({ id: p.id, kod: p.kod, ad: p.ad, tabanMi: p.tabanMi })),
+    proje: { id: pr.id, kod: pr.kod, ad: pr.ad, veriTarihi: pr.veriTarihi, tabanId: yuk.tabanId },
+    ozet: o, egri: ilerlemeEgrisi(yuk),
+    saglik: { puan: s.puan, gecen: s.gecen, toplam: s.toplam, kontroller: s.kontroller.map(k => ({ kod: k.kod, ad: k.ad, aciklama: k.aciklama, durum: k.durum, deger: k.deger, payda: k.payda, esik: k.tip === 'sifir' ? 0 : k.esik, ornek: [...new Set(k.idler)].slice(0, 8).map(i => kod.get(i)) })) },
+    kayanlar: kayanlar(yuk, 15), onumuzdeki: onumuzdeki(yuk, 30).slice(0, 40), kritik: kritikler(yuk, 40),
+    wbs: wbsListe,
+    aktiviteler: A.slice(0, SINIR).map(a => [a.id, a.kod, a.ad, yol(a.w), ST[a.st] ?? 0, a.bas, a.bit, a.bs || null, a.bf || null, a.pct ?? 0, a.st === 'TK_Complete' ? null : a.tf, a.kr ? 1 : 0, TUR[a.tur] || 0]),
+    aktiviteToplam: A.length, kesildi: A.length > SINIR
+  };
+}
 const yedek = require('./mr-yedek');
 
 let SURUM = '1.0.0';
@@ -329,6 +370,42 @@ const ARACLAR = [
     }
   },
   {
+    name: 'mrh_dashboard', title: 'Interactive project dashboard', annotations: OKU,
+    _meta: { ui: { resourceUri: PANO_URI } },
+    description: 'Show an interactive dashboard of a project inside the chat: KPIs, progress S-curve, Gantt with baseline bars, health check, baseline slips and look-ahead. Use it when the user wants to see or explore the schedule. Clients without interactive UI receive a short text summary.',
+    inputSchema: { type: 'object', properties: { ...projeOz, baseline: { type: ['string', 'integer', 'null'], description: 'Baseline project id/code (default: the assigned baseline, null = none)' } } },
+    fn: ({ project, baseline }) => {
+      const p6 = gerekli(); const pr = proje(p6, project);
+      const tb = baseline === undefined ? undefined : baseline === null ? null : proje(p6, baseline).id;
+      const v = panoVerisi(p6, pr, tb);
+      const o = v.ozet;
+      return {
+        __metin: `Dashboard of ${pr.kod} (${pr.ad}) is shown to the user. Data date ${pr.veriTarihi}; progress ${o.ilerlemeYuzde}%${o.tabanPlanliYuzde != null ? ` vs ${o.tabanPlanliYuzde}% planned` : ''}; forecast finish ${o.tahminiBitis}${o.bitisSapmasiGun != null ? ` (${o.bitisSapmasiGun} days vs baseline)` : ''}; health score ${v.saglik.puan}/100; ${o.kritikAcik} open critical activities; ${v.kayanlar.length} activities behind baseline.`,
+        ...v
+      };
+    }
+  },
+  {
+    name: 'mrh_progress_curve', title: 'Progress S-curve data', annotations: OKU,
+    description: 'Cumulative duration-weighted progress over time: baseline plan, current plan and actual up to the data date (percent, about 48 points).',
+    inputSchema: { type: 'object', properties: { ...projeOz, points: { type: 'integer', minimum: 8, maximum: 200, default: 48 } } },
+    fn: ({ project, points = 48 }) => {
+      const p6 = gerekli(); const pr = proje(p6, project);
+      const e = ilerlemeEgrisi(p6.projeYukle(pr.id), points);
+      return { project: pr.kod, data_date: e.veriTarihi, has_baseline: e.tabanVar, points: e.noktalar.map(n => ({ date: n.tarih, baseline: n.taban ?? undefined, current: n.guncel, actual: n.fiili ?? undefined })) };
+    }
+  },
+  {
+    name: 'mrh_critical_activities', title: 'Open critical activities', annotations: OKU,
+    description: 'Open activities on the critical path (total float <= 0 or longest path), ordered by start date, with WBS, remaining duration and baseline finish.',
+    inputSchema: { type: 'object', properties: { ...projeOz, limit: { type: 'integer', minimum: 1, maximum: 1000, default: 100 } } },
+    fn: ({ project, limit = 100 }) => {
+      const p6 = gerekli(); const pr = proje(p6, project);
+      const L = kritikler(p6.projeYukle(pr.id), limit);
+      return { project: pr.kod, data_date: pr.veriTarihi, count: L.length, activities: L.map(k => ({ code: k.kod, name: k.ad, wbs: k.wbs, status: DURUM_TERS[k.durum], start: k.baslangic, finish: k.bitis, remaining_days: k.kalanGun, total_float: k.toplamBolluk, bl_finish: k.tabanBitis || undefined })) };
+    }
+  },
+  {
     name: 'mrh_sql_read', title: 'Read-only SQL', annotations: OKU,
     description: 'Run one read-only SELECT/WITH query on the P6 database (P6 table names such as TASK, TASKPRED, PROJWBS, CALENDAR, RSRC, TASKRSRC). Durations are stored in hours.',
     inputSchema: { type: 'object', required: ['sql'], properties: { sql: { type: 'string' }, limit: { type: 'integer', minimum: 1, maximum: 2000, default: 200 } } },
@@ -478,7 +555,8 @@ const ARACLAR = [
 const gorunur = () => ARACLAR.filter(a => !a.duzenleme || DUZENLEME);
 
 const TALIMAT = `MRH P6 reads${DUZENLEME ? ' and edits' : ''} Primavera P6 Professional SQLite databases.
-Workflow: mrh_db_open (full .db path; mrh_db_find helps locate it) -> mrh_project_list -> mrh_project_overview / mrh_activity_search / mrh_activity_get / mrh_health_check / mrh_baseline_compare / mrh_lookahead.
+Workflow: mrh_db_open (full .db path; mrh_db_find helps locate it) -> mrh_project_list -> mrh_project_overview / mrh_activity_search / mrh_activity_get / mrh_health_check / mrh_baseline_compare / mrh_lookahead / mrh_critical_activities / mrh_progress_curve.
+When the user wants to see or explore the schedule visually, call mrh_dashboard: it renders an interactive dashboard (KPIs, S-curve, Gantt, health, slips) inside the chat where the client supports MCP Apps.
 Durations and float are in working days, dates are YYYY-MM-DD HH:MM. Dates, float and the critical path come from P6's last F9 calculation; this server does not schedule.
 ${DUZENLEME ? `Editing is ENABLED. A compressed backup is taken before the first edit (and every 10 minutes of editing). Confirm destructive actions with the user. Prefer one mrh_activity_update call with many activities over many calls, and use preview=true for large changes. After edits tell the user to press F5 and F9 in P6. mrh_undo reverts the last edit.`
     : 'Editing is DISABLED (read-only). The user can enable it by setting MRH_EDIT=1 in the server configuration.'}`;
@@ -493,14 +571,14 @@ async function isle(m) {
       const istenen = m.params && m.params.protocolVersion;
       return yanit({
         protocolVersion: PROTOKOLLER.includes(istenen) ? istenen : PROTOKOLLER[0],
-        capabilities: { tools: { listChanged: false } },
+        capabilities: { tools: { listChanged: false }, resources: { listChanged: false } },
         serverInfo: { name: 'mrh-p6', title: 'MRH P6', version: SURUM },
         instructions: TALIMAT
       });
     }
     case 'ping': return yanit({});
     case 'tools/list':
-      return yanit({ tools: gorunur().map(({ name, title, description, inputSchema, annotations }) => ({ name, title, description, inputSchema, annotations: { title, ...annotations } })) });
+      return yanit({ tools: gorunur().map(({ name, title, description, inputSchema, annotations, _meta }) => ({ name, title, description, inputSchema, annotations: { title, ...annotations }, ...(_meta ? { _meta } : {}) })) });
     case 'tools/call': {
       const ad = m.params && m.params.name;
       const arac = gorunur().find(a => a.name === ad);
@@ -510,13 +588,24 @@ async function isle(m) {
       }
       try {
         const sonuc = await arac.fn((m.params && m.params.arguments) || {});
+        if (sonuc && typeof sonuc.__metin === 'string') {
+          // Arayuzlu arac: model kisa metni gorur, pano yapisal veriyi kullanir
+          const { __metin, ...veri } = sonuc;
+          return yanit({ content: [{ type: 'text', text: __metin }], structuredContent: veri });
+        }
         return yanit({ content: [{ type: 'text', text: JSON.stringify(sonuc, (k, v) => (v === undefined ? undefined : v)) }] });
       } catch (e) {
         if (!(e instanceof MrhHata)) process.stderr.write(`[mrh-p6] ${e && e.stack || e}\n`);
         return yanit({ isError: true, content: [{ type: 'text', text: 'Error: ' + (e && e.message || String(e)) }] });
       }
     }
-    case 'resources/list': return yanit({ resources: [] });
+    case 'resources/list':
+      return yanit({ resources: [{ uri: PANO_URI, name: 'mrh_p6_dashboard', title: 'MRH P6 Studio dashboard', description: 'Interactive project dashboard (KPIs, S-curve, Gantt, health, slips).', mimeType: PANO_MIME }] });
+    case 'resources/read': {
+      const uri = m.params && m.params.uri;
+      if (uri !== PANO_URI) return hata(-32002, 'Resource not found: ' + uri);
+      return yanit({ contents: [{ uri: PANO_URI, mimeType: PANO_MIME, text: panoHtml(), _meta: { ui: { prefersBorder: false } } }] });
+    }
     case 'prompts/list': return yanit({ prompts: [] });
     default:
       if (m.method.startsWith('notifications/')) return null;

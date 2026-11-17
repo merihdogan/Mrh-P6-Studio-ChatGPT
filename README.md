@@ -12,6 +12,24 @@
   <img alt="Primavera P6 Professional" src="https://img.shields.io/badge/Primavera%20P6-SQLite-f0a868?style=for-the-badge">
 </p>
 
+## ✨ New in 1.1 — an interactive dashboard inside the chat
+
+Ask *"show me the project dashboard"* and the assistant calls `mrh_dashboard`, which renders a live dashboard **right in the conversation**: KPIs, progress S-curve, Gantt with baseline bars and the critical path, health check, baseline slips and a 30-day look-ahead. Click any activity for its live details and logic, switch project or baseline, or send a question about what you see straight back to the chat.
+
+<p align="center"><img src="docs/gorseller/pano-ozet-dark-en.png" alt="Dashboard overview: KPIs, S-curve and WBS progress" width="100%"></p>
+
+<table><tr>
+<td width="50%"><img src="docs/gorseller/pano-gantt-dark-en.png" alt="Gantt with baseline bars and critical path"></td>
+<td width="50%"><img src="docs/gorseller/pano-saglik-dark-en.png" alt="Schedule health check"></td>
+</tr><tr>
+<td width="50%"><img src="docs/gorseller/pano-ozet-light-tr.png" alt="Light theme, Turkish"></td>
+<td width="50%"><sub>Built on <b>MCP Apps</b> (the open standard for UIs in AI chats, spec 2026-01-26).<br><br>
+• Follows the host's light/dark theme and language (English / Türkçe)<br>
+• Self-contained: no external scripts, fonts or network calls<br>
+• Read-only: edits still go through the chat, with your confirmation<br>
+• Renders in ChatGPT (developer-mode connector) and other MCP Apps clients; terminal clients such as Codex CLI get a text summary.</sub></td>
+</tr></table>
+
 ## Why MRH P6 Studio?
 
 Planners spend hours clicking through layouts, filters and reports to answer simple questions. MRH P6 Studio lets your AI assistant read the schedule for you — straight from the P6 Professional database on your computer.
@@ -75,6 +93,7 @@ ChatGPT cannot start programs on your computer — it talks to MCP servers over 
 > *"Find in-progress activities with zero remaining duration."*
 > *"Mark A1020 complete with actual dates 3–14 March, then show me what changed."* ✏️
 > *"Export the project to XER for the client."*
+> *"Show me the project dashboard."* ✨
 
 ## Tools
 
@@ -89,6 +108,9 @@ ChatGPT cannot start programs on your computer — it talks to MCP servers over 
 | `mrh_health_check` | Run 15 schedule quality checks (missing logic, leads, lags, non-FS links, hard constraints, high/negative float, long durations, invalid dates, status errors, duplicate links, loops, redundant links, critical activities) and return a 0-100 score with sample activity codes per check.. |
 | `mrh_baseline_compare` | Activities whose current finish is later than the baseline finish, worst first.. |
 | `mrh_lookahead` | Activities that start or finish within N days after the data date.. |
+| `mrh_dashboard` | Show an interactive dashboard of a project inside the chat: KPIs, progress S-curve, Gantt with baseline bars, health check, baseline slips and look-ahead. |
+| `mrh_progress_curve` | Cumulative duration-weighted progress over time: baseline plan, current plan and actual up to the data date (percent, about 48 points).. |
+| `mrh_critical_activities` | Open activities on the critical path (total float <= 0 or longest path), ordered by start date, with WBS, remaining duration and baseline finish.. |
 | `mrh_sql_read` | Run one read-only SELECT/WITH query on the P6 database (P6 table names such as TASK, TASKPRED, PROJWBS, CALENDAR, RSRC, TASKRSRC). |
 | `mrh_xer_export` | Write a project to an XER file (the database is not changed). |
 | `mrh_backup_list` | List the automatic backups of the open database (taken before edits, kept next to the database in mrh_yedekler).. |
@@ -142,6 +164,7 @@ The server is a single dependency-free Node.js program in [`mrh/`](mrh): `mrh-mc
 
 **MRH P6 Studio**, Primavera P6 Professional SQLite veritabanınızı **ChatGPT ve Codex** ile konuşarak incelemenizi ve izin verirseniz güvenle düzenlemenizi sağlayan açık kaynak bir MCP eklentisidir.
 
+- ✨ **Yeni (1.1): sohbet içi pano.** *"Proje panosunu göster"* deyin; KPI'lar, S-eğrisi, taban çubuklu Gantt, plan sağlığı ve gecikmeler sohbetin içinde etkileşimli olarak açılır (MCP Apps destekleyen istemcilerde).
 - 🔎 *"Gecikmeye ne sebep oluyor?"*, *"Önümüzdeki ay başlayacak kritik aktiviteler hangileri?"*, *"Tabana göre en çok kayan 10 aktivite?"* gibi sorulara doğrudan veritabanından cevap verir.
 - 🩺 **Plan sağlığı:** 15 kontrol, 0–100 puan ve düzeltilecek aktivitelerin listesi.
 - 📈 **İlerleme ve taban karşılaştırması:** süre ağırlıklı ilerleme, veri tarihindeki planlı ilerleme, tahmini bitiş ve sapma, WBS bazında ilerleme.

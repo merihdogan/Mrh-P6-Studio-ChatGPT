@@ -1,6 +1,6 @@
 {
   "name": "mrh-p6-studio-chatgpt",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "MRH P6 Studio for ChatGPT & Codex - talk to your Primavera P6 Professional schedules (open-source MCP server).",
   "author": "Merih Doğan",
   "license": "MIT",

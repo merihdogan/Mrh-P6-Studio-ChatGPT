@@ -75,4 +75,45 @@ function onumuzdeki(yuk, gunSayisi = 30) {
   return L.sort((x, y) => x.tarih.localeCompare(y.tarih));
 }
 
-module.exports = { projeOzeti, kayanlar, onumuzdeki };
+/**
+ * Ilerleme egrisi (S-egrisi): sure agirlikli kumulatif yuzde.
+ * taban = taban plan tarihlerine gore planli, guncel = guncel plan, fiili = veri tarihine kadar gerceklesen.
+ */
+function ilerlemeEgrisi(yuk, nokta = 48) {
+  const A = normal(yuk.aktiviteler);
+  let mn = Infinity, mx = -Infinity;
+  for (const a of A) for (const t of [a.bas, a.bit, a.bs, a.bf]) if (t) { const g = gun(t); if (g < mn) mn = g; if (g > mx) mx = g; }
+  if (!Number.isFinite(mn) || mx <= mn) return { noktalar: [], veriTarihi: yuk.proje.veriTarihi };
+  const top = A.reduce((s, a) => s + agirlik(a), 0) || 1;
+  const dd = gun(yuk.proje.veriTarihi);
+  const tabanVar = A.some(a => a.bs && a.bf);
+  const iso = g => new Date(g * 864e5).toISOString().slice(0, 10);
+  const noktalar = [];
+  for (let i = 0; i <= nokta; i++) {
+    const t = mn + (mx - mn) * i / nokta;
+    const guncel = A.reduce((s, a) => s + agirlik(a) * (a.st === 'TK_Complete' ? oran(a.as || a.bas, a.af || a.bit, t) : oran(a.bas, a.bit, t)), 0) / top * 100;
+    const taban = tabanVar ? A.reduce((s, a) => s + agirlik(a) * oran(a.bs, a.bf, t), 0) / top * 100 : null;
+    let fiili = null;
+    if (dd && t <= dd + 1e-9) {
+      fiili = A.reduce((s, a) => {
+        if (a.st === 'TK_NotStart' || (!a.as && !a.af)) return s;
+        const son = a.st === 'TK_Complete' ? (a.af || a.as) : iso(dd) + ' 00:00';
+        return s + agirlik(a) * (a.pct || 0) / 100 * oran(a.as || a.af, son, t);
+      }, 0) / top * 100;
+    }
+    noktalar.push({ tarih: iso(t), taban: yuvarla(taban), guncel: yuvarla(guncel), fiili: yuvarla(fiili) });
+  }
+  return { noktalar, veriTarihi: yuk.proje.veriTarihi, tabanVar };
+}
+
+/** Acik kritik aktiviteler, baslangica gore sirali. */
+function kritikler(yuk, limit = 200) {
+  const W = new Map(yuk.wbs.map(w => [w.id, w]));
+  const yol = id => { const p = []; let w = W.get(id), g = 0; while (w && !w.kok && g++ < 50) { p.unshift(w.kod); w = W.get(w.ust); } return p.join('.'); };
+  return yuk.aktiviteler.filter(a => a.kr && a.st !== 'TK_Complete' && a.tur !== 'TT_LOE')
+    .sort((x, y) => (x.bas || '').localeCompare(y.bas || '') || (x.bit || '').localeCompare(y.bit || ''))
+    .slice(0, limit)
+    .map(a => ({ kod: a.kod, ad: a.ad, wbs: yol(a.w), durum: a.st, baslangic: a.bas, bitis: a.bit, kalanGun: a.rd, toplamBolluk: a.tf, tabanBitis: a.bf || null }));
+}
+
+module.exports = { projeOzeti, kayanlar, onumuzdeki, ilerlemeEgrisi, kritikler };

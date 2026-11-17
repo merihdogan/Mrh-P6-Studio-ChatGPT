@@ -11,7 +11,7 @@ const DIZIN = fs.mkdtempSync(path.join(os.tmpdir(), 'mrh-mcp-'));
 const DB = path.join(DIZIN, 'demo.db');
 execFileSync(process.execPath, [path.join(__dirname, '..', 'araclar', 'dgn-demo-olustur.js'), DB], { stdio: 'ignore' });
 const SUNUCU = path.join(__dirname, '..', 'mrh', 'mrh-mcp.js');
-test.after(() => fs.rmSync(DIZIN, { recursive: true, force: true }));
+test.after(() => { try { fs.rmSync(DIZIN, { recursive: true, force: true }); } catch { /* Windows dosya kilidi */ } });
 
 function stdioIstemci(env) {
   const p = spawn(process.execPath, ['--disable-warning=ExperimentalWarning', SUNUCU], { env: { ...process.env, LOCALAPPDATA: DIZIN, ...env }, stdio: ['pipe', 'pipe', 'pipe'] });
@@ -106,4 +106,36 @@ test('HTTP tasima: gizli yol, initialize, tools/list', async () => {
     const L = await (await fetch(url, { method: 'POST', body: JSON.stringify({ jsonrpc: '2.0', id: 2, method: 'tools/list' }) })).json();
     assert.ok(L.result.tools.length >= 12);
   } finally { p.kill(); }
+});
+
+test('MCP Apps: ui:// pano kaynagi, arac baglantisi ve yapisal veri', async () => {
+  const c = stdioIstemci({ MRH_DB: DB, MRH_EDIT: '' });
+  const ini = await c.iste('initialize', { protocolVersion: '2025-06-18', capabilities: { extensions: { 'io.modelcontextprotocol/ui': { mimeTypes: ['text/html;profile=mcp-app'] } } } });
+  assert.ok(ini.result.capabilities.resources);
+  const kaynak = (await c.iste('resources/list')).result.resources;
+  assert.equal(kaynak[0].uri, 'ui://mrh-p6/pano');
+  assert.equal(kaynak[0].mimeType, 'text/html;profile=mcp-app');
+  const oku = (await c.iste('resources/read', { uri: 'ui://mrh-p6/pano' })).result.contents[0];
+  assert.equal(oku.mimeType, 'text/html;profile=mcp-app');
+  assert.match(oku.text, /^<!doctype html>/i);
+  assert.match(oku.text, /ui\/initialize/);
+  assert.ok(!/https?:\/\/(?!www\.w3\.org)/.test(oku.text.replace(/xmlns="[^"]+"/g, '')), 'pano dis kaynak kullanmamali');
+  assert.equal((await c.iste('resources/read', { uri: 'ui://yok' })).error.code, -32002);
+  const arac = (await c.iste('tools/list')).result.tools.find(t => t.name === 'mrh_dashboard');
+  assert.equal(arac._meta.ui.resourceUri, 'ui://mrh-p6/pano');
+  const r = (await c.iste('tools/call', { name: 'mrh_dashboard', arguments: {} })).result;
+  assert.match(r.content[0].text, /Dashboard of MRH-DEMO/);
+  const s = r.structuredContent;
+  assert.ok(s.aktiviteToplam >= 65);
+  assert.equal(s.aktiviteler.length, s.aktiviteToplam);
+  assert.equal(s.aktiviteler[0].length, 13);
+  assert.ok(s.egri.noktalar.length > 40 && s.egri.tabanVar);
+  assert.equal(s.saglik.kontroller.length, 15);
+  assert.ok(s.kayanlar.length > 0 && s.wbs.length > 0);
+  const e = await c.cagir('mrh_progress_curve', { points: 12 });
+  assert.equal(e.veri.points.length, 13);
+  assert.ok(e.veri.points.at(-1).current > 99);
+  const k = await c.cagir('mrh_critical_activities', {});
+  assert.ok(k.veri.count > 0 && k.veri.activities.every(a => a.status !== 'completed'));
+  c.kapat();
 });

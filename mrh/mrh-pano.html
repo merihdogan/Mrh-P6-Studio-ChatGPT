@@ -1,0 +1,523 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MRH P6 Studio</title>
+<style>
+/* MRH P6 Studio - sohbet ici pano (MCP Apps)  (c) Merih Dogan - MIT */
+:root{
+  color-scheme: dark;
+  --zemin:#0d1322; --kart:#151d31; --kart2:#1a2440; --cizgi:rgba(148,163,184,.14); --cizgi2:rgba(148,163,184,.26);
+  --metin:#e8edf7; --soluk:#97a3ba; --silik:#64708a;
+  --altin:#dcb46e; --altin2:#f2d9a3; --turkuaz:#5eead4; --mavi:#6ea8ff; --kritik:#ff7a85; --tamam:#5bd68f; --uyari:#f5c451; --mor:#a78bfa;
+  --cubuk:#4c8dff; --cubuk-tamam:#56708f; --taban:#dcb46e;
+  --font: var(--font-sans, "Segoe UI Variable Text","Segoe UI",Inter,system-ui,-apple-system,sans-serif);
+  --mono: var(--font-mono, "Cascadia Code",Consolas,ui-monospace,monospace);
+  --r: 14px;
+}
+:root[data-theme="light"]{
+  color-scheme: light;
+  --zemin:#f5f6fa; --kart:#ffffff; --kart2:#f1f3f8; --cizgi:rgba(15,23,42,.09); --cizgi2:rgba(15,23,42,.17);
+  --metin:#141b2b; --soluk:#55617a; --silik:#8a94a8;
+  --altin:#a9792a; --altin2:#c99a4a; --turkuaz:#0f9f8b; --mavi:#2f6fe0; --kritik:#e0475a; --tamam:#1f9d58; --uyari:#c58a0b; --mor:#7c5ce0;
+  --cubuk:#3b7cf0; --cubuk-tamam:#a3b4cb; --taban:#c99a4a;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:transparent}
+body{font:13px/1.45 var(--font);color:var(--metin)}
+.kap{background:radial-gradient(700px 300px at 100% 0%,color-mix(in srgb,var(--altin) 10%,transparent),transparent 60%),var(--zemin);border:1px solid var(--cizgi);border-radius:18px;overflow:hidden}
+button,select,input{font:inherit;color:inherit}
+.ust{display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid var(--cizgi);flex-wrap:wrap}
+.logo{width:34px;height:34px;flex:none}
+.baslik{min-width:0;flex:1}
+.baslik b{display:block;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.baslik span{font-size:11.5px;color:var(--soluk)}
+.marka{font-size:10.5px;font-weight:700;letter-spacing:.2em;background:linear-gradient(90deg,var(--altin2),var(--altin));-webkit-background-clip:text;background-clip:text;color:transparent}
+.sec{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+select{background:var(--kart);border:1px solid var(--cizgi2);border-radius:9px;padding:5px 8px;max-width:190px}
+.dg{display:inline-flex;align-items:center;gap:6px;height:30px;padding:0 11px;border-radius:9px;border:1px solid var(--cizgi2);background:var(--kart);cursor:pointer;white-space:nowrap}
+.dg:hover{border-color:var(--altin)}
+.dg.ana{background:linear-gradient(180deg,var(--altin2),var(--altin));color:#1b1407;border-color:transparent;font-weight:600}
+.dg.ik{width:30px;padding:0;justify-content:center}
+.dg svg{width:15px;height:15px}
+.sekme{display:flex;gap:2px;padding:0 10px;border-bottom:1px solid var(--cizgi);overflow-x:auto}
+.sekme button{border:0;background:none;padding:10px 12px;cursor:pointer;color:var(--soluk);position:relative;white-space:nowrap}
+.sekme button.on{color:var(--metin)}
+.sekme button.on::after{content:"";position:absolute;left:10px;right:10px;bottom:-1px;height:2px;border-radius:2px;background:var(--altin)}
+.sekme .rozet{font-size:10.5px;padding:1px 6px;border-radius:99px;margin-left:5px;background:color-mix(in srgb,var(--kritik) 20%,transparent);color:var(--kritik)}
+.govde{padding:14px 16px 16px}
+.kpi{display:grid;grid-template-columns:repeat(auto-fill,minmax(128px,1fr));gap:10px;margin-bottom:12px}
+.k{background:var(--kart);border:1px solid var(--cizgi);border-radius:var(--r);padding:12px 14px;position:relative;overflow:hidden}
+.k::before{content:"";position:absolute;inset:0 auto 0 0;width:3px;background:var(--v,var(--altin))}
+.k .e{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--soluk)}
+.k .d{font-size:22px;font-weight:700;margin-top:4px;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.k .n{font-size:11.5px;color:var(--silik);margin-top:2px}
+.k .n.iyi{color:var(--tamam)} .k .n.kotu{color:var(--kritik)}
+.cubukcuk{height:5px;border-radius:9px;background:var(--cizgi);position:relative;margin-top:8px;overflow:hidden}
+.cubukcuk i{position:absolute;inset:0 auto 0 0;border-radius:9px;background:linear-gradient(90deg,var(--turkuaz),var(--mavi))}
+.cubukcuk em{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--altin)}
+.iki{display:grid;grid-template-columns:1.55fr 1fr;gap:10px}
+@media (max-width:640px){.iki{grid-template-columns:1fr}}
+.kart{background:var(--kart);border:1px solid var(--cizgi);border-radius:var(--r);padding:12px 14px;min-width:0}
+.kart h3{margin:0 0 8px;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--soluk);font-weight:600;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.lej{display:flex;gap:12px;font-size:11px;color:var(--soluk);text-transform:none;letter-spacing:0;font-weight:400}
+.lej i{display:inline-block;width:14px;height:3px;border-radius:2px;margin-right:5px;vertical-align:middle}
+svg text{font-family:var(--font)}
+.wbs{display:flex;flex-direction:column;gap:9px}
+.wbs .s{display:grid;grid-template-columns:1fr 44px;gap:3px 10px;align-items:center;font-size:12.5px}
+.wbs .s span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.wbs .s b{font-weight:500;text-align:right;color:var(--soluk);font-variant-numeric:tabular-nums}
+.wbs .cubukcuk{grid-column:1/-1;margin:0}
+.arac{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-bottom:10px}
+.arac input[type=search]{background:var(--kart);border:1px solid var(--cizgi2);border-radius:9px;padding:5px 10px;width:190px;outline:none}
+.arac input[type=search]:focus{border-color:var(--altin)}
+.cip{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:99px;border:1px solid var(--cizgi2);background:var(--kart);cursor:pointer;font-size:12px;color:var(--soluk)}
+.cip.on{color:var(--metin);border-color:var(--altin);background:color-mix(in srgb,var(--altin) 12%,var(--kart))}
+.nokta{width:8px;height:8px;border-radius:50%;display:inline-block}
+.gantt{position:relative;border:1px solid var(--cizgi);border-radius:var(--r);background:var(--kart);overflow:hidden}
+.gantt .bas{height:30px;border-bottom:1px solid var(--cizgi2)}
+.gantt .kay{height:420px;overflow-y:auto;position:relative}
+.gantt canvas{display:block}
+.gantt .kay canvas{position:sticky;top:0}
+.ipucu{position:fixed;pointer-events:none;background:var(--kart2);border:1px solid var(--cizgi2);border-radius:10px;padding:8px 10px;font-size:12px;box-shadow:0 12px 30px -10px rgba(0,0,0,.5);max-width:300px;z-index:9;display:none}
+.ipucu b{display:block;margin-bottom:3px}
+.ipucu .r{display:flex;justify-content:space-between;gap:12px;color:var(--soluk)}
+.ipucu .r span:last-child{color:var(--metin);font-variant-numeric:tabular-nums}
+table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+th{text-align:left;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--silik);font-weight:600;padding:6px 8px;border-bottom:1px solid var(--cizgi2)}
+td{padding:6px 8px;border-bottom:1px solid var(--cizgi);white-space:nowrap;max-width:260px;overflow:hidden;text-overflow:ellipsis}
+tr.tk{cursor:pointer} tr.tk:hover td{background:color-mix(in srgb,var(--altin) 7%,transparent)}
+.sag{text-align:right} .mono{font-family:var(--mono);font-size:11.5px} .kirmizi{color:var(--kritik)} .yesil{color:var(--tamam)}
+.etk{display:inline-block;padding:1px 8px;border-radius:99px;font-size:11px;font-weight:600}
+.etk.kr{background:color-mix(in srgb,var(--kritik) 16%,transparent);color:var(--kritik)}
+.etk.yl{background:color-mix(in srgb,var(--tamam) 16%,transparent);color:var(--tamam)}
+.etk.mv{background:color-mix(in srgb,var(--mavi) 16%,transparent);color:var(--mavi)}
+.etk.gr{background:var(--cizgi);color:var(--soluk)}
+.saglik{display:grid;grid-template-columns:170px 1fr;gap:14px;align-items:start}
+@media (max-width:560px){.saglik{grid-template-columns:1fr}}
+.kontrol{display:flex;flex-direction:column;gap:7px}
+.kt{border:1px solid var(--cizgi);border-radius:12px;padding:8px 11px;background:var(--kart)}
+.kt.kaldi{border-color:color-mix(in srgb,var(--kritik) 40%,transparent)}
+.kt .u{display:flex;align-items:center;gap:8px}
+.kt .u b{flex:1;font-weight:600;font-size:12.5px}
+.kt .u .s{font-family:var(--mono);font-weight:700}
+.kt p{margin:4px 0 0 24px;color:var(--silik);font-size:11.5px}
+.kodlar{display:flex;flex-wrap:wrap;gap:4px;margin:6px 0 0 24px}
+.kodlar a{font-family:var(--mono);font-size:11px;padding:1px 7px;border-radius:6px;background:var(--kart2);color:var(--mavi);cursor:pointer;text-decoration:none}
+.cekmece{position:fixed;inset:auto 10px 10px 10px;max-height:70%;overflow:auto;background:var(--kart2);border:1px solid var(--cizgi2);border-radius:16px;box-shadow:0 -10px 40px -10px rgba(0,0,0,.55);padding:14px 16px;z-index:8;animation:yuk .2s ease}
+@keyframes yuk{from{transform:translateY(16px);opacity:0}to{transform:none;opacity:1}}
+.cekmece h4{margin:0;font-size:15px}
+.ozel{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px 14px;margin:10px 0}
+.ozel div span{display:block;font-size:10.5px;color:var(--silik);text-transform:uppercase;letter-spacing:.06em}
+.alt{display:flex;justify-content:space-between;gap:10px;padding:9px 16px;border-top:1px solid var(--cizgi);font-size:11px;color:var(--silik);flex-wrap:wrap}
+.bos{padding:40px 16px;text-align:center;color:var(--soluk)}
+.donen{width:26px;height:26px;border-radius:50%;border:3px solid var(--cizgi2);border-top-color:var(--altin);animation:don .8s linear infinite;margin:0 auto 10px}
+@keyframes don{to{transform:rotate(360deg)}}
+.bildirim{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);background:var(--kart2);border:1px solid var(--cizgi2);border-radius:10px;padding:8px 14px;font-size:12px;z-index:10;display:none}
+.gizli{display:none!important}
+</style>
+</head>
+<body>
+<div class="kap" id="kap">
+  <div class="ust">
+    <svg class="logo" viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="la" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f3d9a4"/><stop offset="1" stop-color="#b9893c"/></linearGradient></defs>
+      <rect x="2" y="2" width="60" height="60" rx="15" fill="#151d30" stroke="url(#la)" stroke-width="2"/><rect x="13" y="17" width="22" height="6" rx="3" fill="url(#la)"/>
+      <rect x="23" y="29" width="26" height="6" rx="3" fill="#5eead4"/><rect x="31" y="41" width="20" height="6" rx="3" fill="url(#la)" opacity=".85"/></svg>
+    <div class="baslik"><div class="marka">MRH P6 STUDIO</div><b id="pAd">…</b><span id="pAlt"></span></div>
+    <div class="sec">
+      <select id="sProje" title=""></select>
+      <select id="sTaban" title=""></select>
+      <button class="dg ik" id="bYenile" title=""><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 11a8 8 0 1 0-2.3 5.7M20 5v6h-6"/></svg></button>
+      <button class="dg ik gizli" id="bTam" title=""><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>
+    </div>
+  </div>
+  <div class="sekme" id="sekmeler"></div>
+  <div class="govde" id="govde"><div class="bos"><div class="donen"></div><span id="ilkMesaj"></span></div></div>
+  <div class="alt"><span id="altSol"></span><span id="altSag">MRH P6 Studio · Merih Doğan · MIT</span></div>
+</div>
+<div class="ipucu" id="ipucu"></div>
+<div class="bildirim" id="bildirim"></div>
+<script>
+(() => {
+'use strict';
+// ------------------------------------------------------------------ dil
+const SOZ = {
+  tr: { yukleniyor: 'Pano hazırlanıyor…', disarida: 'Bu pano bir yapay zekâ asistanının (MCP Apps destekli) içinde açılır.', ozet: 'Özet', gantt: 'Gantt', saglik: 'Plan sağlığı', gecikme: 'Gecikmeler', yakin: 'Önümüzdeki 30 gün',
+    ilerleme: 'Gerçekleşen ilerleme', plan: 'Taban planı', tahmin: 'Tahmini bitiş', taban: 'Taban bitiş', sapma: 'Bitiş sapması', gun: 'gün', puan: 'Sağlık puanı', kritik: 'Açık kritik', durum: 'Durum',
+    tamam: 'tamamlandı', devam: 'devam ediyor', baslamadi: 'başlamadı', egri: 'İlerleme eğrisi', guncel: 'Güncel plan', fiili: 'Gerçekleşen', wbs: 'WBS ilerlemesi', ara: 'Kod ya da ad ara…',
+    yalnizKritik: 'Yalnız kritik', tamamGizle: 'Tamamlananları gizle', hepsi: 'Tümü', kontrolGecti: 'kontrol geçti', aciklat: 'Asistana açıklat', sor: 'Asistana sor', kapat: 'Kapat',
+    oncul: 'Öncüller', ardil: 'Ardıllar', kod: 'Kod', ad: 'Aktivite', bas: 'Başlangıç', bit: 'Bitiş', tb: 'TB', kalan: 'Kalan', yok: 'Kayıt yok', tabanYok: '(taban yok)', veriTarihi: 'Veri tarihi',
+    olay: 'Olay', baslayacak: 'Başlayacak', bitecek: 'Bitecek', salt: 'Salt okunur', duzen: 'Düzenleme açık', aktivite: 'aktivite', kesildi: 'ilk {n} aktivite gösteriliyor', hataVeri: 'Veri alınamadı',
+    yenile: 'Yenile', tarih: 'Tarih', kritikEtiket: 'Kritik', tam: 'Tam ekran', projeSec: 'Proje', tabanSec: 'Taban', gonderildi: 'Soru sohbete gönderildi', bolluk: 'Toplam bolluk', tur: 'Tür', takvim: 'Takvim', fiiliBas: 'Fiili başlangıç', fiiliBit: 'Fiili bitiş',
+    os: 'Orijinal süre', ks: 'Kalan süre', yuzde: 'Tamamlanma', tabanBit: 'Taban bitiş' },
+  en: { yukleniyor: 'Preparing dashboard…', disarida: 'This dashboard opens inside an AI assistant that supports MCP Apps.', ozet: 'Overview', gantt: 'Gantt', saglik: 'Health', gecikme: 'Slips', yakin: 'Next 30 days',
+    ilerleme: 'Actual progress', plan: 'Baseline plan', tahmin: 'Forecast finish', taban: 'Baseline finish', sapma: 'Finish variance', gun: 'days', puan: 'Health score', kritik: 'Open critical', durum: 'Status',
+    tamam: 'completed', devam: 'in progress', baslamadi: 'not started', egri: 'Progress curve', guncel: 'Current plan', fiili: 'Actual', wbs: 'WBS progress', ara: 'Search code or name…',
+    yalnizKritik: 'Critical only', tamamGizle: 'Hide completed', hepsi: 'All', kontrolGecti: 'checks passed', aciklat: 'Ask assistant to explain', sor: 'Ask the assistant', kapat: 'Close',
+    oncul: 'Predecessors', ardil: 'Successors', kod: 'Code', ad: 'Activity', bas: 'Start', bit: 'Finish', tb: 'TF', kalan: 'Remaining', yok: 'Nothing here', tabanYok: '(no baseline)', veriTarihi: 'Data date',
+    olay: 'Event', baslayacak: 'Starts', bitecek: 'Finishes', salt: 'Read-only', duzen: 'Editing enabled', aktivite: 'activities', kesildi: 'showing the first {n} activities', hataVeri: 'Could not load data',
+    yenile: 'Refresh', tarih: 'Date', kritikEtiket: 'Critical', tam: 'Fullscreen', projeSec: 'Project', tabanSec: 'Baseline', gonderildi: 'Question sent to the chat', bolluk: 'Total float', tur: 'Type', takvim: 'Calendar', fiiliBas: 'Actual start', fiiliBit: 'Actual finish',
+    os: 'Original duration', ks: 'Remaining duration', yuzde: 'Complete', tabanBit: 'Baseline finish' }
+};
+const KONTROL_EN = { mantik: 'Missing logic', oncu: 'Negative lags (leads)', gecikme: 'Positive lags', iliskiTuru: 'Non-FS relationships', sf: 'Start-to-finish links', kisit: 'Hard constraints',
+  bolluk: 'High total float', negatif: 'Negative float', uzun: 'Long durations', gecersiz: 'Invalid dates', durum: 'Status inconsistencies', kopya: 'Duplicate links', dongu: 'Logic loops', gereksiz: 'Redundant FS links', kritik: 'Critical activities' };
+let dil = (navigator.language || 'en').toLowerCase().startsWith('tr') ? 'tr' : 'en';
+const t = k => (SOZ[dil] && SOZ[dil][k]) || SOZ.en[k] || k;
+
+// ------------------------------------------------------------------ yardimci
+const $ = s => document.querySelector(s);
+const x = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const gunNo = s => s ? Date.UTC(+s.slice(0, 4), +s.slice(5, 7) - 1, +s.slice(8, 10)) / 864e5 + (+s.slice(11, 13) || 0) / 24 : null;
+const tarih = (s, kisa) => { if (!s) return ''; const d = new Date(s.slice(0, 10) + 'T00:00:00Z'); return d.toLocaleDateString(dil === 'tr' ? 'tr-TR' : 'en-GB', { day: '2-digit', month: 'short', year: kisa ? undefined : '2-digit', timeZone: 'UTC' }); };
+const sayi = (n, b = 1) => n == null || n === '' ? '' : Number(n).toLocaleString(dil === 'tr' ? 'tr-TR' : 'en-GB', { maximumFractionDigits: b });
+const yz = (n, b = 1) => n == null ? '' : (dil === 'tr' ? '%' + sayi(n, b) : sayi(n, b) + '%');
+const renk = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+const DURUM_AD = [() => t('baslamadi'), () => t('devam'), () => t('tamam')];
+const DURUM_RENK = ['--silik', '--mavi', '--tamam'];
+function bildirimGoster(m) { const b = $('#bildirim'); b.textContent = m; b.style.display = 'block'; clearTimeout(b._z); b._z = setTimeout(() => (b.style.display = 'none'), 2600); }
+
+// ------------------------------------------------------------------ kopru (JSON-RPC / postMessage)
+const ICERIDE = window.parent && window.parent !== window;
+let sira = 1; const bekleyen = new Map();
+function istek(method, params) {
+  if (!ICERIDE) return Promise.reject(new Error('no host'));
+  const id = sira++;
+  window.parent.postMessage({ jsonrpc: '2.0', id, method, params }, '*');
+  return new Promise((ok, red) => { bekleyen.set(id, { ok, red }); setTimeout(() => { if (bekleyen.has(id)) { bekleyen.delete(id); red(new Error('timeout: ' + method)); } }, 90000); });
+}
+function bildir(method, params) { if (ICERIDE) window.parent.postMessage({ jsonrpc: '2.0', method, params }, '*'); }
+function yanitla(id, result) { window.parent.postMessage({ jsonrpc: '2.0', id, result }, '*'); }
+
+let baglam = {}, kabiliyet = {}, girdi = {}, veri = null, sekme = 'ozet';
+window.addEventListener('message', e => {
+  if (e.source !== window.parent) return;
+  const m = e.data;
+  if (!m || m.jsonrpc !== '2.0') return;
+  if (m.id != null && !m.method) {
+    const b = bekleyen.get(m.id); if (!b) return; bekleyen.delete(m.id);
+    if (m.error) b.red(new Error(m.error.message || 'error')); else b.ok(m.result);
+    return;
+  }
+  switch (m.method) {
+    case 'ui/notifications/tool-input': girdi = (m.params && m.params.arguments) || {}; break;
+    case 'ui/notifications/tool-result': sonucAl(m.params); break;
+    case 'ui/notifications/tool-cancelled': $('#govde').innerHTML = `<div class="bos">${x(m.params && m.params.reason || 'cancelled')}</div>`; break;
+    case 'ui/notifications/host-context-changed': baglamUygula(Object.assign(baglam, m.params || {})); break;
+    case 'ui/resource-teardown': yanitla(m.id, {}); break;
+    case 'ping': yanitla(m.id, {}); break;
+  }
+});
+
+function baglamUygula(b) {
+  if (b.locale) dil = String(b.locale).toLowerCase().startsWith('tr') ? 'tr' : 'en';
+  document.documentElement.lang = dil;
+  if (b.theme) document.documentElement.dataset.theme = b.theme;
+  const v = b.styles && b.styles.variables;
+  if (v) for (const k of ['--font-sans', '--font-mono']) if (v[k]) document.documentElement.style.setProperty(k, v[k]);
+  const cd = b.containerDimensions;
+  if (cd && 'height' in cd) { document.documentElement.style.height = '100vh'; $('#kap').style.minHeight = '100vh'; }
+  const tamVar = (b.availableDisplayModes || []).includes('fullscreen');
+  $('#bTam').classList.toggle('gizli', !tamVar);
+  $('#bTam').title = t('tam'); $('#bYenile').title = t('yenile'); $('#sProje').title = t('projeSec'); $('#sTaban').title = t('tabanSec');
+  $('#ilkMesaj') && ($('#ilkMesaj').textContent = t('yukleniyor'));
+  if (veri) ciz();
+}
+
+function sonucAl(r) {
+  if (!r) return;
+  let s = r.structuredContent;
+  if (!s && r.content) { try { s = JSON.parse(r.content.find(c => c.type === 'text').text); } catch { /* metin */ } }
+  if (r.isError || !s || !s.ozet) { $('#govde').innerHTML = `<div class="bos">${t('hataVeri')}<br><span class="mono">${x(r.content && r.content[0] && r.content[0].text || '')}</span></div>`; return; }
+  veri = s; ciz();
+}
+
+async function araciCagir(ad, args) {
+  const r = await istek('tools/call', { name: ad, arguments: args });
+  if (r && r.isError) throw new Error((r.content && r.content[0] && r.content[0].text) || 'error');
+  return r;
+}
+async function yenile(args) {
+  $('#govde').innerHTML = `<div class="bos"><div class="donen"></div>${t('yukleniyor')}</div>`;
+  try { sonucAl(await araciCagir('mrh_dashboard', args)); }
+  catch (e) { $('#govde').innerHTML = `<div class="bos">${t('hataVeri')}<br><span class="mono">${x(e.message)}</span></div>`; }
+}
+async function sohbeteSor(metin) {
+  try { await istek('ui/message', { role: 'user', content: { type: 'text', text: metin } }); bildirimGoster(t('gonderildi')); }
+  catch { bildirimGoster(metin); }
+}
+
+// ------------------------------------------------------------------ cizim
+function ciz() {
+  const v = veri, o = v.ozet;
+  $('#pAd').textContent = `${v.proje.kod} · ${v.proje.ad}`;
+  $('#pAlt').textContent = `${t('veriTarihi')}: ${tarih(v.proje.veriTarihi)} · ${v.aktiviteToplam} ${t('aktivite')}`;
+  $('#sProje').innerHTML = v.projeler.map(p => `<option value="${p.id}" ${p.id === v.proje.id ? 'selected' : ''}>${x(p.kod)}${p.tabanMi ? ' (BL)' : ''}</option>`).join('');
+  $('#sTaban').innerHTML = `<option value="">${t('tabanYok')}</option>` + v.projeler.filter(p => p.id !== v.proje.id).map(p => `<option value="${p.id}" ${p.id === v.proje.tabanId ? 'selected' : ''}>BL: ${x(p.kod)}</option>`).join('');
+  $('#altSol').textContent = `${v.veritabani} · ${v.duzenleme ? t('duzen') : t('salt')} · v${v.surum}`;
+  const kalan = v.saglik.kontroller.filter(k => k.durum === 'kaldi').length;
+  const S = [['ozet', t('ozet')], ['gantt', t('gantt')], ['saglik', t('saglik') + (kalan ? `<span class="rozet">${kalan}</span>` : '')], ['gecikme', t('gecikme')], ['yakin', t('yakin')]];
+  $('#sekmeler').innerHTML = S.map(([k, a]) => `<button data-s="${k}" class="${k === sekme ? 'on' : ''}">${a}</button>`).join('');
+  ({ ozet: cizOzet, gantt: cizGantt, saglik: cizSaglik, gecikme: cizGecikme, yakin: cizYakin })[sekme]();
+}
+
+function kpi(e, d, n, vurgu, sinif = '', ek = '') { return `<div class="k" style="--v:var(${vurgu})"><div class="e">${e}</div><div class="d">${d}</div><div class="n ${sinif}">${n}</div>${ek}</div>`; }
+
+function cizOzet() {
+  const v = veri, o = v.ozet, d = o.durum;
+  const plan = o.tabanPlanliYuzde;
+  const sap = o.bitisSapmasiGun;
+  const pr = plan != null ? `<div class="cubukcuk"><i style="width:${o.ilerlemeYuzde}%"></i><em style="left:${plan}%"></em></div>` : `<div class="cubukcuk"><i style="width:${o.ilerlemeYuzde}%"></i></div>`;
+  $('#govde').innerHTML = `
+    <div class="kpi">
+      ${kpi(t('ilerleme'), yz(o.ilerlemeYuzde), plan != null ? `${t('plan')}: ${yz(plan)}` : '&nbsp;', '--turkuaz', plan != null ? (o.ilerlemeYuzde >= plan ? 'iyi' : 'kotu') : '', pr)}
+      ${kpi(t('tahmin'), tarih(o.tahminiBitis) || '—', o.tabanBitis ? `${t('taban')}: ${tarih(o.tabanBitis)}` : t('tabanYok'), '--mavi')}
+      ${kpi(t('sapma'), sap == null ? '—' : `${sap > 0 ? '+' : ''}${sap} <small style="font-size:12px;color:var(--soluk)">${t('gun')}</small>`, '&nbsp;', sap < 0 ? '--kritik' : '--tamam', sap < 0 ? 'kotu' : 'iyi')}
+      ${kpi(t('puan'), `${v.saglik.puan}<small style="font-size:12px;color:var(--soluk)">/100</small>`, `${v.saglik.gecen}/${v.saglik.toplam} ${t('kontrolGecti')}`, '--mor')}
+      ${kpi(t('kritik'), o.kritikAcik, o.negatifBolluk ? `${o.negatifBolluk} < 0 TF` : '&nbsp;', '--kritik')}
+      ${kpi(t('durum'), `${d.tamamlandi}<small style="font-size:12px;color:var(--soluk)"> / ${d.tamamlandi + d.devamEdiyor + d.baslamadi}</small>`, `${d.devamEdiyor} ${t('devam')} · ${d.baslamadi} ${t('baslamadi')}`, '--tamam')}
+    </div>
+    <div class="iki">
+      <div class="kart"><h3>${t('egri')}<span class="lej">${v.egri.tabanVar ? `<span><i style="background:var(--taban)"></i>${t('plan')}</span>` : ''}<span><i style="background:var(--mavi)"></i>${t('guncel')}</span><span><i style="background:var(--turkuaz)"></i>${t('fiili')}</span></span></h3><div id="egri"></div></div>
+      <div class="kart"><h3>${t('wbs')}</h3><div class="wbs">${o.wbs.map(w => `<div class="s"><span title="${x(w.ad)}">${x(w.ad)}</span><b>${yz(w.ilerleme, 0)}</b>
+        <div class="cubukcuk"><i style="width:${w.ilerleme || 0}%"></i>${w.planli != null ? `<em style="left:${w.planli}%" title="${t('plan')} ${yz(w.planli)}"></em>` : ''}</div></div>`).join('') || `<span style="color:var(--silik)">${t('yok')}</span>`}</div></div>
+    </div>`;
+  cizEgri($('#egri'));
+}
+
+function cizEgri(kap) {
+  const N = veri.egri.noktalar; if (!N.length) { kap.innerHTML = `<div class="bos">${t('yok')}</div>`; return; }
+  const W = 560, H = 230, sl = 34, al = 22, ul = 8, sg = 8;
+  const g0 = gunNo(N[0].tarih), g1 = gunNo(N[N.length - 1].tarih);
+  const X = g => sl + (g - g0) / (g1 - g0 || 1) * (W - sl - sg), Y = v => ul + (1 - v / 100) * (H - ul - al);
+  const yol = k => { let s = '', ilk = true; for (const n of N) { if (n[k] == null) continue; s += `${ilk ? 'M' : 'L'}${X(gunNo(n.tarih)).toFixed(1)} ${Y(n[k]).toFixed(1)} `; ilk = false; } return s; };
+  const dd = gunNo(veri.proje.veriTarihi);
+  const fiiliSon = [...N].reverse().find(n => n.fiili != null);
+  let aylar = '';
+  const d = new Date(g0 * 864e5); d.setUTCDate(1); d.setUTCMonth(d.getUTCMonth() + 1);
+  const adim = Math.max(1, Math.round((g1 - g0) / 30 / 6));
+  for (let i = 0; d.getTime() / 864e5 < g1; d.setUTCMonth(d.getUTCMonth() + 1), i++) if (!(i % adim)) aylar += `<text x="${X(d.getTime() / 864e5)}" y="${H - 6}" text-anchor="middle" font-size="10" fill="var(--silik)">${d.toLocaleDateString(dil === 'tr' ? 'tr-TR' : 'en-GB', { month: 'short', year: '2-digit', timeZone: 'UTC' })}</text>`;
+  kap.innerHTML = `<svg viewBox="0 0 ${W} ${H}" width="100%" style="display:block" id="egriSvg">
+    <defs><linearGradient id="ga" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="var(--turkuaz)" stop-opacity=".28"/><stop offset="1" stop-color="var(--turkuaz)" stop-opacity="0"/></linearGradient></defs>
+    ${[0, 25, 50, 75, 100].map(p => `<line x1="${sl}" x2="${W - sg}" y1="${Y(p)}" y2="${Y(p)}" stroke="var(--cizgi)"/><text x="${sl - 6}" y="${Y(p) + 3}" text-anchor="end" font-size="10" fill="var(--silik)">${yz(p, 0)}</text>`).join('')}
+    ${aylar}
+    ${dd && dd >= g0 && dd <= g1 ? `<line x1="${X(dd)}" x2="${X(dd)}" y1="${ul}" y2="${H - al}" stroke="var(--altin)" stroke-dasharray="4 4"/>` : ''}
+    ${veri.egri.tabanVar ? `<path d="${yol('taban')}" fill="none" stroke="var(--taban)" stroke-width="2" stroke-dasharray="6 4"/>` : ''}
+    <path d="${yol('guncel')}" fill="none" stroke="var(--mavi)" stroke-width="2.2"/>
+    ${fiiliSon ? `<path d="${yol('fiili')} L${X(gunNo(fiiliSon.tarih))} ${Y(0)} L${X(g0)} ${Y(0)} Z" fill="url(#ga)"/><path d="${yol('fiili')}" fill="none" stroke="var(--turkuaz)" stroke-width="2.6"/>` : ''}
+    <line id="egriCizgi" y1="${ul}" y2="${H - al}" stroke="var(--soluk)" stroke-opacity=".5" visibility="hidden"/>
+  </svg>`;
+  const svg = $('#egriSvg'), ip = $('#ipucu');
+  svg.addEventListener('mousemove', e => {
+    const r = svg.getBoundingClientRect(); const px = (e.clientX - r.left) / r.width * W;
+    let en = N[0]; for (const n of N) if (Math.abs(X(gunNo(n.tarih)) - px) < Math.abs(X(gunNo(en.tarih)) - px)) en = n;
+    const c = $('#egriCizgi'); c.setAttribute('x1', X(gunNo(en.tarih))); c.setAttribute('x2', X(gunNo(en.tarih))); c.setAttribute('visibility', 'visible');
+    ip.innerHTML = `<b>${tarih(en.tarih)}</b>${en.taban != null ? `<div class="r"><span>${t('plan')}</span><span>${yz(en.taban)}</span></div>` : ''}<div class="r"><span>${t('guncel')}</span><span>${yz(en.guncel)}</span></div>${en.fiili != null ? `<div class="r"><span>${t('fiili')}</span><span>${yz(en.fiili)}</span></div>` : ''}`;
+    konumla(ip, e);
+  });
+  svg.addEventListener('mouseleave', () => { ip.style.display = 'none'; $('#egriCizgi').setAttribute('visibility', 'hidden'); });
+}
+function konumla(ip, e) { ip.style.display = 'block'; ip.style.left = Math.min(e.clientX + 14, innerWidth - ip.offsetWidth - 8) + 'px'; ip.style.top = Math.min(e.clientY + 14, innerHeight - ip.offsetHeight - 8) + 'px'; }
+
+// ---- Gantt
+const gFiltre = { q: '', kritik: false, tamamGizle: false };
+function cizGantt() {
+  $('#govde').innerHTML = `<div class="arac"><input type="search" id="gAra" placeholder="${t('ara')}" value="${x(gFiltre.q)}">
+      <button class="cip ${gFiltre.kritik ? 'on' : ''}" id="gKr"><span class="nokta" style="background:var(--kritik)"></span>${t('yalnizKritik')}</button>
+      <button class="cip ${gFiltre.tamamGizle ? 'on' : ''}" id="gTm">${t('tamamGizle')}</button>
+      <span style="margin-left:auto;color:var(--silik);font-size:11.5px" id="gSay"></span></div>
+    <div class="gantt"><canvas class="bas" id="gBas"></canvas><div class="kay" id="gKay"><canvas id="gCan"></canvas><div id="gYer"></div></div></div>`;
+  let z; $('#gAra').addEventListener('input', e => { clearTimeout(z); z = setTimeout(() => { gFiltre.q = e.target.value.trim().toLowerCase(); ganttKur(); }, 120); });
+  $('#gKr').onclick = () => { gFiltre.kritik = !gFiltre.kritik; $('#gKr').classList.toggle('on'); ganttKur(); };
+  $('#gTm').onclick = () => { gFiltre.tamamGizle = !gFiltre.tamamGizle; $('#gTm').classList.toggle('on'); ganttKur(); };
+  ganttKur();
+}
+let gSatir = [], gAralik = [0, 1];
+const RH = 24, SOL = 230;
+function ganttKur() {
+  const L = veri.aktiviteler.filter(a => (!gFiltre.kritik || a[11]) && (!gFiltre.tamamGizle || a[4] !== 2) && (!gFiltre.q || (a[1] + ' ' + a[2]).toLowerCase().includes(gFiltre.q)));
+  gSatir = []; let son = null;
+  for (const a of L) { if (a[3] !== son) { son = a[3]; const w = veri.wbs.find(w => w.yol === a[3]); gSatir.push({ w: a[3], ad: w ? w.ad : a[3] }); } gSatir.push({ a }); }
+  let mn = Infinity, mx = -Infinity;
+  for (const a of veri.aktiviteler) for (const s of [a[5], a[6], a[7], a[8]]) if (s) { const g = gunNo(s); mn = Math.min(mn, g); mx = Math.max(mx, g); }
+  if (!Number.isFinite(mn)) { mn = Date.now() / 864e5; mx = mn + 30; }
+  gAralik = [mn - 7, mx + 10];
+  $('#gSay').textContent = `${L.length} ${t('aktivite')}` + (veri.kesildi ? ` · ${t('kesildi').replace('{n}', veri.aktiviteler.length)}` : '');
+  $('#gYer').style.height = gSatir.length * RH + 'px';
+  const kay = $('#gKay');
+  kay.onscroll = () => requestAnimationFrame(ganttCiz);
+  ganttCiz();
+  const can = $('#gCan'), ip = $('#ipucu');
+  can.onmousemove = e => {
+    const s = satirAt(e); if (!s || !s.a) { ip.style.display = 'none'; return; }
+    const a = s.a;
+    ip.innerHTML = `<b>${x(a[1])} · ${x(a[2])}</b><div class="r"><span>${t('bas')}</span><span>${tarih(a[5])}</span></div><div class="r"><span>${t('bit')}</span><span>${tarih(a[6])}</span></div>
+      ${a[8] ? `<div class="r"><span>${t('tabanBit')}</span><span>${tarih(a[8])}</span></div>` : ''}<div class="r"><span>${t('yuzde')}</span><span>${yz(a[9], 0)}</span></div>${a[10] != null ? `<div class="r"><span>${t('bolluk')}</span><span>${sayi(a[10])} ${t('gun')}</span></div>` : ''}`;
+    konumla(ip, e);
+  };
+  can.onmouseleave = () => (ip.style.display = 'none');
+  can.onclick = e => { const s = satirAt(e); if (s && s.a) aktiviteAc(s.a[1]); };
+}
+function satirAt(e) { const r = $('#gCan').getBoundingClientRect(); return gSatir[Math.floor((e.clientY - r.top + $('#gKay').scrollTop) / RH)]; }
+function tuval(c, w, h) { const dpr = devicePixelRatio || 1; c.width = Math.round(w * dpr); c.height = Math.round(h * dpr); c.style.width = w + 'px'; c.style.height = h + 'px'; const g = c.getContext('2d'); g.setTransform(dpr, 0, 0, dpr, 0, 0); return g; }
+function ganttCiz() {
+  const kay = $('#gKay'); if (!kay) return;
+  const w = kay.clientWidth, h = kay.clientHeight, ust = kay.scrollTop;
+  const R = k => renk(k), F = getComputedStyle(document.body).fontFamily;
+  const [g0, g1] = gAralik, X = g => SOL + (g - g0) / (g1 - g0) * (w - SOL - 8);
+  // baslik
+  const b = tuval($('#gBas'), w, 30); b.font = `600 10.5px ${F}`; b.textBaseline = 'middle';
+  b.fillStyle = R('--soluk'); b.fillText(`${t('kod')} · ${t('ad')}`, 10, 15);
+  const d = new Date(g0 * 864e5); d.setUTCDate(1);
+  const adim = Math.max(1, Math.round((g1 - g0) / 30 / ((w - SOL) / 70)));
+  for (let i = 0; d.getTime() / 864e5 < g1; d.setUTCMonth(d.getUTCMonth() + 1), i++) {
+    const x0 = X(d.getTime() / 864e5); if (x0 < SOL) continue;
+    b.strokeStyle = R('--cizgi'); b.beginPath(); b.moveTo(x0 + .5, 0); b.lineTo(x0 + .5, 30); b.stroke();
+    if (!(i % adim)) { b.fillStyle = R('--soluk'); b.fillText(d.toLocaleDateString(dil === 'tr' ? 'tr-TR' : 'en-GB', { month: 'short', year: '2-digit', timeZone: 'UTC' }), x0 + 4, 15); }
+  }
+  // govde
+  const c = tuval($('#gCan'), w, h); c.font = `500 11.5px ${F}`; c.textBaseline = 'middle';
+  const ilk = Math.floor(ust / RH), son = Math.min(gSatir.length, ilk + Math.ceil(h / RH) + 1);
+  const dd = gunNo(veri.proje.veriTarihi);
+  // ay cizgileri
+  const ay = new Date(g0 * 864e5); ay.setUTCDate(1); c.fillStyle = R('--cizgi');
+  for (; ay.getTime() / 864e5 < g1; ay.setUTCMonth(ay.getUTCMonth() + 1)) { const xa = X(ay.getTime() / 864e5); if (xa > SOL) c.fillRect(Math.round(xa), 0, 1, h); }
+  for (let i = ilk; i < son; i++) {
+    const s = gSatir[i], y = i * RH - ust;
+    if (s.w) {
+      c.fillStyle = R('--kart2'); c.fillRect(0, y, w, RH);
+      c.fillStyle = R('--metin'); c.font = `700 11px ${F}`; c.fillText(kes(c, `${s.w} · ${s.ad}`, w - 20), 8, y + RH / 2); c.font = `500 11.5px ${F}`;
+      continue;
+    }
+    const a = s.a;
+    c.fillStyle = R('--cizgi'); c.fillRect(0, y + RH - 1, w, 1);
+    if (a[11]) { c.fillStyle = R('--kritik'); c.fillRect(0, y + 6, 2.5, RH - 12); }
+    c.fillStyle = R('--soluk'); c.font = '500 10.5px Consolas, "Cascadia Code", monospace'; c.fillText(a[1], 10, y + RH / 2);
+    c.font = `500 11.5px ${F}`; c.fillStyle = R('--metin'); c.fillText(kes(c, a[2], SOL - 92), 84, y + RH / 2);
+    // taban
+    if (a[7] && a[8]) { const bx = X(gunNo(a[7])), bw = Math.max(2, X(gunNo(a[8])) - bx); c.fillStyle = R('--taban'); c.globalAlpha = .85; c.fillRect(bx, y + 17, bw, 3); c.globalAlpha = 1; }
+    if (!a[5] || !a[6]) continue;
+    const x1 = X(gunNo(a[5])), x2 = X(gunNo(a[6]));
+    const ana = a[4] === 2 ? R('--cubuk-tamam') : a[11] ? R('--kritik') : R('--cubuk');
+    if (a[12] === 1 || a[12] === 2) {
+      const mx = a[12] === 1 ? x1 : x2; c.fillStyle = ana; c.beginPath(); c.moveTo(mx, y + 5); c.lineTo(mx + 6, y + 11); c.lineTo(mx, y + 17); c.lineTo(mx - 6, y + 11); c.fill(); continue;
+    }
+    c.globalAlpha = a[12] === 3 ? .45 : 1;
+    c.fillStyle = ana; yuv(c, x1, y + 6, Math.max(3, x2 - x1), 10, 4); c.fill();
+    if (a[4] === 1 && dd) { const xd = Math.min(X(dd), x2); if (xd > x1) { c.save(); yuv(c, x1, y + 6, Math.max(3, x2 - x1), 10, 4); c.clip(); c.fillStyle = R('--cubuk-tamam'); c.fillRect(x1, y + 6, xd - x1, 10); c.restore(); } }
+    c.globalAlpha = 1;
+  }
+  if (dd) { const xd = Math.round(X(dd)) + .5; c.strokeStyle = R('--altin'); c.setLineDash([4, 4]); c.beginPath(); c.moveTo(xd, 0); c.lineTo(xd, h); c.stroke(); c.setLineDash([]); }
+  c.strokeStyle = R('--cizgi2'); c.beginPath(); c.moveTo(SOL - .5, 0); c.lineTo(SOL - .5, h); c.stroke();
+}
+function yuv(c, x, y, w, h, r) { c.beginPath(); if (c.roundRect) c.roundRect(x, y, w, h, r); else c.rect(x, y, w, h); }
+function kes(c, s, mx) { s = String(s); if (c.measureText(s).width <= mx) return s; while (s.length > 1 && c.measureText(s + '…').width > mx) s = s.slice(0, -1); return s + '…'; }
+
+// ---- Saglik
+function cizSaglik() {
+  const s = veri.saglik, r = 64, C = 2 * Math.PI * r;
+  const rk = s.puan >= 85 ? 'var(--tamam)' : s.puan >= 60 ? 'var(--uyari)' : 'var(--kritik)';
+  const ad = k => dil === 'tr' ? k.ad : (KONTROL_EN[k.kod] || k.ad);
+  $('#govde').innerHTML = `<div class="saglik">
+    <div class="kart" style="text-align:center"><svg viewBox="0 0 160 160" width="150" height="150"><circle cx="80" cy="80" r="${r}" fill="none" stroke="var(--cizgi)" stroke-width="12"/>
+      <circle cx="80" cy="80" r="${r}" fill="none" stroke="${rk}" stroke-width="12" stroke-linecap="round" stroke-dasharray="${C * s.puan / 100} ${C}" transform="rotate(-90 80 80)"/>
+      <text x="80" y="86" text-anchor="middle" font-size="38" font-weight="700" fill="var(--metin)">${s.puan}</text><text x="80" y="106" text-anchor="middle" font-size="11" fill="var(--silik)">/ 100</text></svg>
+      <div style="color:var(--soluk);font-size:12px">${s.gecen}/${s.toplam} ${t('kontrolGecti')}</div>
+      <button class="dg ana" id="sAcikla" style="margin-top:10px;width:100%;justify-content:center">${t('aciklat')}</button></div>
+    <div class="kontrol">${s.kontroller.map(k => `<div class="kt ${k.durum}"><div class="u">
+        <span style="color:${k.durum === 'gecti' ? 'var(--tamam)' : k.durum === 'kaldi' ? 'var(--kritik)' : 'var(--silik)'};width:16px">${k.durum === 'gecti' ? '✓' : k.durum === 'kaldi' ? '✕' : 'ℹ'}</span>
+        <b>${x(ad(k))}</b><span class="s" style="color:${k.durum === 'kaldi' ? 'var(--kritik)' : 'var(--soluk)'}">${k.deger}<span style="font-weight:400;color:var(--silik)"> / ${k.payda}</span></span></div>
+        ${dil === 'tr' ? `<p>${x(k.aciklama)}</p>` : ''}
+        ${k.durum === 'kaldi' && k.ornek.length ? `<div class="kodlar">${k.ornek.map(c => `<a data-akt="${x(c)}">${x(c)}</a>`).join('')}</div>` : ''}</div>`).join('')}</div></div>`;
+  $('#sAcikla').onclick = () => sohbeteSor(dil === 'tr'
+    ? `${veri.proje.kod} projesinin plan sağlığı kontrolünde kalan maddeleri açıkla ve öncelik sırasıyla nasıl düzelteceğimi öner.`
+    : `Explain the failed schedule health checks of project ${veri.proje.kod} and suggest how to fix them, most important first.`);
+  aktiviteLinkleri();
+}
+function aktiviteLinkleri() { document.querySelectorAll('[data-akt]').forEach(el => el.onclick = () => aktiviteAc(el.dataset.akt)); }
+
+// ---- Gecikmeler / yakin
+function cizGecikme() {
+  const L = veri.kayanlar;
+  $('#govde').innerHTML = `<div class="kart">${L.length ? `<table><thead><tr><th>${t('kod')}</th><th>${t('ad')}</th><th>${t('tabanBit')}</th><th>${t('bit')}</th><th class="sag">Δ</th></tr></thead><tbody>
+    ${L.map(k => `<tr class="tk" data-akt="${x(k.kod)}"><td class="mono">${k.kritik ? '<span class="kirmizi">●</span> ' : ''}${x(k.kod)}</td><td title="${x(k.ad)}">${x(k.ad)}</td><td>${tarih(k.tabanBitis)}</td><td>${tarih(k.guncelBitis)}</td><td class="sag kirmizi">${k.sapmaGun} ${t('gun')}</td></tr>`).join('')}</tbody></table>`
+    : `<div class="bos">${veri.proje.tabanId ? t('yok') : t('tabanYok')}</div>`}
+    ${L.length ? `<button class="dg" id="gSor" style="margin-top:10px">${t('sor')}</button>` : ''}</div>`;
+  aktiviteLinkleri();
+  const b = $('#gSor'); if (b) b.onclick = () => sohbeteSor(dil === 'tr' ? `${veri.proje.kod} projesinde tabana göre en çok kayan aktivitelerin nedenlerini ve bitiş tarihine etkisini analiz et.` : `Analyse why the most-slipped activities of ${veri.proje.kod} are behind the baseline and how they affect the finish date.`);
+}
+function cizYakin() {
+  const L = veri.onumuzdeki;
+  $('#govde').innerHTML = `<div class="kart">${L.length ? `<table><thead><tr><th>${t('olay')}</th><th>${t('kod')}</th><th>${t('ad')}</th><th>${t('tarih')}</th><th class="sag">${t('tb')}</th></tr></thead><tbody>
+    ${L.map(e => `<tr class="tk" data-akt="${x(e.kod)}"><td>${e.olay === 'baslayacak' ? `<span class="etk mv">${t('baslayacak')}</span>` : `<span class="etk yl">${t('bitecek')}</span>`}</td><td class="mono">${e.kritik ? '<span class="kirmizi">●</span> ' : ''}${x(e.kod)}</td>
+      <td title="${x(e.ad)}">${x(e.ad)}</td><td>${tarih(e.tarih)}</td><td class="sag ${e.bolluk < 0 ? 'kirmizi' : ''}">${sayi(e.bolluk)}</td></tr>`).join('')}</tbody></table>` : `<div class="bos">${t('yok')}</div>`}</div>`;
+  aktiviteLinkleri();
+}
+
+// ---- Aktivite cekmecesi (canli veri)
+async function aktiviteAc(kod) {
+  $('.cekmece') && $('.cekmece').remove();
+  const ck = document.createElement('div'); ck.className = 'cekmece'; ck.innerHTML = `<div class="donen"></div>`; document.body.appendChild(ck);
+  try {
+    const r = await araciCagir('mrh_activity_get', { project: veri.proje.id, activity: kod });
+    const a = JSON.parse(r.content[0].text);
+    const st = { not_started: 0, in_progress: 1, completed: 2 }[a.status] ?? 0;
+    const tablo = (L, b) => `<div style="min-width:0"><h3 style="margin:10px 0 4px;font-size:11px;color:var(--soluk);text-transform:uppercase;letter-spacing:.06em">${b}</h3>${L.length ? `<table><tbody>${L.map(p => `<tr class="tk" data-akt="${x(p.code)}"><td class="mono">${x(p.code)}</td><td>${x(p.name)}</td><td>${p.type}${p.lag_days ? ' ' + (p.lag_days > 0 ? '+' : '') + p.lag_days : ''}</td></tr>`).join('')}</tbody></table>` : `<span style="color:var(--silik)">${t('yok')}</span>`}</div>`;
+    ck.innerHTML = `<div style="display:flex;align-items:center;gap:10px"><span class="etk ${a.critical ? 'kr' : ['gr', 'mv', 'yl'][st]}">${a.critical ? t('kritikEtiket') : DURUM_AD[st]()}</span>
+        <h4 style="flex:1"><span class="mono" style="color:var(--mavi)">${x(a.code)}</span> · ${x(a.name)}</h4><button class="dg" id="ckSor">${t('sor')}</button><button class="dg ik" id="ckKapat" title="${t('kapat')}">✕</button></div>
+      <div class="ozel">
+        <div><span>${t('bas')}</span>${tarih(a.start)}</div><div><span>${t('bit')}</span>${tarih(a.finish)}</div><div><span>${t('tabanBit')}</span>${tarih(a.bl_finish) || '—'}</div>
+        <div><span>${t('os')}</span>${sayi(a.od)} ${t('gun')}</div><div><span>${t('ks')}</span>${sayi(a.rd)} ${t('gun')}</div><div><span>${t('yuzde')}</span>${yz(a.pct, 0)}</div>
+        <div><span>${t('bolluk')}</span>${a.total_float == null ? '—' : sayi(a.total_float) + ' ' + t('gun')}</div><div><span>WBS</span>${x(a.wbs)}</div><div><span>${t('takvim')}</span>${x(a.calendar || '')}</div>
+      </div>
+      <div class="iki">${tablo(a.predecessors || [], t('oncul'))}${tablo(a.successors || [], t('ardil'))}</div>`;
+    ck.querySelector('#ckKapat').onclick = () => ck.remove();
+    ck.querySelector('#ckSor').onclick = () => sohbeteSor(dil === 'tr' ? `${veri.proje.kod} projesindeki ${a.code} (${a.name}) aktivitesini değerlendir: durumu, bolluğu, öncül/ardıl mantığı ve riskleri.` : `Review activity ${a.code} (${a.name}) in project ${veri.proje.kod}: status, float, predecessor/successor logic and risks.`);
+    ck.querySelectorAll('[data-akt]').forEach(el => el.onclick = () => aktiviteAc(el.dataset.akt));
+    istek('ui/update-model-context', { content: [{ type: 'text', text: `In the MRH P6 Studio dashboard the user is looking at activity ${a.code} "${a.name}" of project ${veri.proje.kod} (status ${a.status}, start ${a.start}, finish ${a.finish}, total float ${a.total_float ?? 'n/a'} days).` }] }).catch(() => {});
+  } catch (e) { ck.innerHTML = `<div class="bos">${t('hataVeri')}<br><span class="mono">${x(e.message)}</span></div><button class="dg" onclick="this.parentNode.remove()">${t('kapat')}</button>`; }
+}
+
+// ------------------------------------------------------------------ olaylar
+$('#sekmeler').addEventListener('click', e => { const b = e.target.closest('[data-s]'); if (!b) return; sekme = b.dataset.s; ciz(); });
+$('#sProje').onchange = e => yenile({ project: Number(e.target.value) });
+$('#sTaban').onchange = e => yenile({ project: veri.proje.id, baseline: e.target.value === '' ? null : Number(e.target.value) });
+$('#bYenile').onclick = () => yenile({ project: veri ? veri.proje.id : girdi.project, baseline: veri ? (veri.proje.tabanId ?? null) : girdi.baseline });
+$('#bTam').onclick = async () => {
+  const hedef = baglam.displayMode === 'fullscreen' ? 'inline' : 'fullscreen';
+  try { const r = await istek('ui/request-display-mode', { mode: hedef }); baglam.displayMode = r && r.mode || baglam.displayMode; } catch { /* desteklenmiyor */ }
+};
+window.addEventListener('resize', () => { if (sekme === 'gantt') requestAnimationFrame(ganttCiz); });
+let boyZ, sonBoy = '';
+new ResizeObserver(() => {
+  clearTimeout(boyZ);
+  boyZ = setTimeout(() => {
+    const k = $('#kap'); const w = Math.ceil(k.scrollWidth), h = Math.ceil(k.getBoundingClientRect().height);
+    const s = w + 'x' + h; if (s === sonBoy) return; sonBoy = s;
+    bildir('ui/notifications/size-changed', { width: w, height: h });
+    if (sekme === 'gantt') ganttCiz();
+  }, 80);
+}).observe(document.getElementById('kap'));
+
+// ------------------------------------------------------------------ baslangic
+(async () => {
+  $('#ilkMesaj').textContent = t('yukleniyor');
+  if (!ICERIDE) { $('#govde').innerHTML = `<div class="bos">${t('disarida')}</div>`; return; }
+  try {
+    const r = await istek('ui/initialize', {
+      protocolVersion: '2026-01-26',
+      appInfo: { name: 'mrh-p6-dashboard', version: '1.1.0' }, clientInfo: { name: 'mrh-p6-dashboard', version: '1.1.0' },
+      appCapabilities: { availableDisplayModes: ['inline', 'fullscreen'] }
+    });
+    kabiliyet = (r && r.hostCapabilities) || {};
+    baglam = (r && r.hostContext) || {};
+    baglamUygula(baglam);
+  } catch { /* eski host: varsayilanlarla devam */ }
+  bildir('ui/notifications/initialized', {});
+  // Sonuc bildirimi gelmezse veriyi kendimiz isteriz (sunucu araclarina erisim varsa)
+  setTimeout(() => { if (!veri && kabiliyet.serverTools) yenile(girdi); }, 4000);
+})();
+})();
+</script>
+</body>
+</html>
